@@ -27,11 +27,20 @@ export default function TransactionGrid({
 }) {
   const columns = useMemo<ColDef<Entry>[]>(
     () => [
-      { field: "description", headerName: "Transaction", minWidth: 210, flex: 2 },
+      { field: "description", headerName: "Transaction", minWidth: 180, flex: 2 },
+      {
+        field: "occurredAt",
+        colId: "time",
+        headerName: "Time",
+        minWidth: 105,
+        valueFormatter: (p) =>
+          new Date(p.value).toLocaleTimeString([], { hour: "2-digit", minute: "2-digit" }),
+        headerTooltip: "Payment time in your local timezone",
+      },
       {
         field: "occurredAt",
         headerName: "Date",
-        minWidth: 140,
+        minWidth: 115,
         valueFormatter: (p) =>
           new Date(p.value).toLocaleDateString("en-US", {
             month: "short",
@@ -40,20 +49,20 @@ export default function TransactionGrid({
           }),
         sort: "desc",
       },
-      { field: "category", minWidth: 140 },
-      { field: "direction", headerName: "Direction", minWidth: 110 },
+      { field: "category", minWidth: 115 },
+      { field: "direction", headerName: "Direction", minWidth: 95 },
       {
         field: "amountMinor",
         headerName: "Amount",
-        minWidth: 140,
+        minWidth: 115,
         valueFormatter: (p) => money(p.value, p.data?.currency),
         cellStyle: (p) => ({
           color: p.data?.direction === "RECEIVED" ? "#118762" : "#17192B",
           fontWeight: 600,
         }),
       },
-      { field: "kind", headerName: "Type", minWidth: 110 },
-      { field: "reference", headerName: "Verified reference", minWidth: 190 },
+      { field: "kind", headerName: "Type", minWidth: 95 },
+      { field: "reference", headerName: "Verified reference", minWidth: 160 },
     ],
     [],
   );
@@ -66,8 +75,8 @@ export default function TransactionGrid({
         defaultColDef={{ sortable: true, filter: true, resizable: true, flex: 1 }}
         quickFilterText={query}
         pagination
-        paginationPageSize={20}
-        paginationPageSizeSelector={[20, 50, 100]}
+        paginationAutoPageSize
+        paginationPageSizeSelector={false}
         onRowClicked={(e) => e.data && onSelect(e.data)}
         getRowId={(p) => p.data.id}
         overlayNoRowsTemplate="<span>No verified activity matches this view.</span>"

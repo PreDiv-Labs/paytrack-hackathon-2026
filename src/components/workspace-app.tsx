@@ -48,6 +48,7 @@ import { analyze, type Entry } from "@/lib/analytics";
 import type { CopilotAnswer } from "@/lib/copilot";
 import { currencies, categories, money, toMinor, decimal, splitEqual } from "@/lib/money";
 import { logout } from "@/app/actions";
+import { notificationDestination } from "@/lib/notification-destination";
 const Charts = dynamic(() => import("./charts"), {
   ssr: false,
   loading: () => <div className="chart-loading skeleton" />,
@@ -174,8 +175,17 @@ export function WorkspaceApp({
   const router = useRouter(),
     params = useSearchParams();
   const [data, setData] = useState(initial),
-    [currency, setCurrency] = useState("USD"),
-    [month, setMonth] = useState(new Date().toISOString().slice(0, 7));
+    [currency, setCurrency] = useState(
+      params.get("currency") &&
+        currencies.includes(params.get("currency") as (typeof currencies)[number])
+        ? params.get("currency")!
+        : "USD",
+    ),
+    [month, setMonth] = useState(
+      /^\d{4}-(0[1-9]|1[0-2])$/.test(params.get("month") ?? "")
+        ? params.get("month")!
+        : new Date().toISOString().slice(0, 7),
+    );
   const [mobile, setMobile] = useState(false),
     [notifications, setNotifications] = useState(false),
     [userMenu, setUserMenu] = useState(false),
@@ -385,12 +395,8 @@ export function WorkspaceApp({
         </div>
         <span className="nav-label">WORKSPACE</span>
         <nav aria-label="Main navigation">
-          {navigation.map(({ id, label, icon: Icon, group }) => (
-            <Link
-              href={href(id)}
-              key={id}
-              className={`nav-link ${section === id ? "active" : ""} ${group ? "nav-break" : ""}`}
-            >
+          {navigation.map(({ id, label, icon: Icon }) => (
+            <Link href={href(id)} key={id} className={`nav-link ${section === id ? "active" : ""}`}>
               <Icon size={18} strokeWidth={1.7} />
               {label}
               {id === "copilot" && <span className="nav-ai">AI</span>}
@@ -406,7 +412,7 @@ export function WorkspaceApp({
               About your connection <ArrowRight size={13} />
             </Link>
           </div>
-          <Link href="/" className="help-link">
+          <Link href="/about" target="_blank" rel="noopener noreferrer" className="help-link">
             <CircleHelp size={17} /> About PayTrack <ArrowUpRight size={14} />
           </Link>
           <div className="sidebar-foot">
@@ -429,22 +435,6 @@ export function WorkspaceApp({
             </span>
           </div>
           <div className="topbar-right">
-            <form
-              className="global-search"
-              onSubmit={(e) => {
-                e.preventDefault();
-                router.push(`${href("transactions")}?q=${encodeURIComponent(query)}`);
-              }}
-            >
-              <Search size={16} />
-              <input
-                aria-label="Search transactions"
-                placeholder="Search transactions…"
-                value={query}
-                onChange={(e) => setQuery(e.target.value)}
-              />
-              <kbd>↵</kbd>
-            </form>
             <span className="badge sandbox">
               <span />
               Sandbox
@@ -501,7 +491,10 @@ export function WorkspaceApp({
             </Link>
           </div>
         )}
-        <main className="workspace-content" id="main-content">
+        <main
+          className={`workspace-content ${section === "transactions" ? "transactions-content" : ""}`}
+          id="main-content"
+        >
           <div className="page-heading">
             <div>
               <div className="eyebrow">
@@ -920,7 +913,7 @@ export function WorkspaceApp({
           )}
           {section === "transactions" && (
             <>
-              <section className="panel">
+              <section className="panel transactions-panel">
                 <div className="transaction-toolbar">
                   <div className="table-search">
                     <Search size={16} />
@@ -1584,6 +1577,15 @@ export function WorkspaceApp({
               {label}
             </Link>
           ))}
+          <Link
+            href="/about"
+            target="_blank"
+            rel="noopener noreferrer"
+            className="nav-link"
+            onClick={() => setMobile(false)}
+          >
+            <CircleHelp size={18} /> About PayTrack <ArrowUpRight size={14} />
+          </Link>
         </nav>
       </Modal>
       <Modal
@@ -1595,7 +1597,23 @@ export function WorkspaceApp({
         <div className="notification-list">
           {data.notifications.length ? (
             data.notifications.map((n) => (
-              <article key={n.id}>
+              <Link
+                key={n.id}
+                href={notificationDestination(n, preview, data.entries)}
+                className="notification-item"
+                onClick={() => {
+                  setNotifications(false);
+                  const destination = notificationDestination(n, preview, data.entries);
+                  const search = new URLSearchParams(destination.split("?")[1]);
+                  setQuery(search.get("q") ?? "");
+                  if (search.has("month")) setMonth(search.get("month")!);
+                  if (search.has("currency")) setCurrency(search.get("currency")!);
+                  setDirection("all");
+                  setKind("all");
+                  setFrom("");
+                  setTo("");
+                }}
+              >
                 <span className={`icon-box ${n.readAt ? "neutral" : "purple"}`}>
                   <Bell size={17} />
                 </span>
@@ -1604,7 +1622,8 @@ export function WorkspaceApp({
                   <p>{n.message}</p>
                   <small>{new Date(n.createdAt).toLocaleString()}</small>
                 </div>
-              </article>
+                <ArrowUpRight size={16} />
+              </Link>
             ))
           ) : (
             <Empty

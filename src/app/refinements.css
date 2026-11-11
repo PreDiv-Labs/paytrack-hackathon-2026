@@ -369,6 +369,244 @@ textarea {
 }
 
 /* Keep the workspace readable as the available content width changes. */
+.sidebar nav {
+  display: grid;
+  gap: 4px;
+}
+.sidebar .nav-link {
+  margin: 0;
+  padding-block: 10px;
+}
+.sidebar .nav-break {
+  margin-top: 0;
+}
+.workspace-switch {
+  margin-bottom: 22px;
+}
+.sidebar-brand {
+  padding-bottom: 24px;
+}
+.workspace-content {
+  padding-top: clamp(20px, 3vh, 32px);
+}
+.notification-item {
+  display: flex;
+  gap: 12px;
+  align-items: flex-start;
+  padding: 16px 10px;
+  border-bottom: 1px solid var(--border);
+  border-radius: 10px;
+}
+.notification-item:hover {
+  background: var(--purple-soft);
+}
+.notification-item > div {
+  flex: 1;
+  min-width: 0;
+  overflow-wrap: anywhere;
+}
+.notification-item > svg {
+  color: var(--purple);
+  margin-top: 10px;
+}
+.transactions-panel {
+  display: flex;
+  flex-direction: column;
+}
+.transaction-grid {
+  height: clamp(240px, calc(100dvh - 420px), 620px);
+  min-height: 0;
+}
+.transaction-toolbar {
+  gap: 8px;
+  padding: 14px 18px;
+}
+.table-caption {
+  padding-block: 9px;
+  flex-wrap: wrap;
+  gap: 8px;
+}
+.transaction-grid .ag-paging-panel {
+  flex-wrap: wrap;
+  gap: 6px;
+  padding: 8px 12px;
+  height: auto;
+  min-height: 44px;
+}
+.about-page {
+  max-width: 1180px;
+  margin: auto;
+  padding: 0 clamp(20px, 5vw, 64px);
+}
+.about-nav,
+.about-footer {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 20px;
+  padding-block: 28px;
+  flex-wrap: wrap;
+}
+.about-intro {
+  padding: clamp(45px, 8vw, 100px) 0 64px;
+  max-width: 740px;
+}
+.about-intro h1 {
+  font-size: clamp(42px, 7vw, 76px);
+  line-height: 1.08;
+  font-weight: 600;
+  margin: 20px 0 24px;
+  letter-spacing: -0.055em;
+}
+.about-intro h1 span {
+  color: var(--purple);
+}
+.about-intro p {
+  font-size: clamp(15px, 2vw, 18px);
+  color: var(--muted);
+  line-height: 1.9;
+  max-width: 620px;
+  margin-bottom: 28px;
+}
+.about-features {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 22px;
+}
+.about-features article {
+  padding: 30px;
+  background: white;
+  border: 1px solid var(--border);
+  border-radius: 20px;
+}
+.about-features h2 {
+  font-size: 19px;
+  margin: 20px 0 12px;
+}
+.about-features p,
+.about-scope p {
+  color: var(--muted);
+  font-size: 14px;
+  line-height: 1.9;
+}
+.about-scope {
+  padding: 35px;
+  border-radius: 22px;
+  background: var(--purple-soft);
+  margin: 32px 0;
+}
+.about-scope h2 {
+  font-size: clamp(22px, 3vw, 30px);
+  margin: 18px 0 12px;
+}
+.about-footer {
+  border-top: 1px solid var(--border);
+  font-size: 12px;
+  color: var(--muted);
+}
+.about-footer a {
+  display: inline-flex;
+  align-items: center;
+  gap: 7px;
+}
+@media (min-width: 961px) and (min-height: 650px) {
+  .transactions-content {
+    height: calc(100dvh - 70px);
+    display: flex;
+    flex-direction: column;
+    padding-top: 22px;
+    padding-bottom: 0;
+  }
+  .transactions-content .page-heading {
+    flex-shrink: 0;
+    margin-bottom: 16px;
+  }
+  .transactions-content .report-toolbar {
+    margin-bottom: 14px;
+    flex-shrink: 0;
+  }
+  .transactions-content .transactions-panel {
+    flex: 1;
+    min-height: 200px;
+  }
+  .transactions-content .transaction-grid {
+    flex: 1;
+    height: auto;
+    min-height: 120px;
+  }
+  .transactions-content .transaction-toolbar,
+  .transactions-content .table-caption {
+    flex-shrink: 0;
+  }
+  .transactions-content > .notice {
+    padding-block: 9px;
+    margin-top: 10px;
+    flex-shrink: 0;
+  }
+  .transactions-content .workspace-footer {
+    padding-block: 12px;
+    flex-shrink: 0;
+  }
+  .app-main:has(.preview-bar) .transactions-content {
+    height: calc(100dvh - 108px);
+  }
+}
+@media (max-height: 800px) and (min-width: 961px) {
+  .sidebar {
+    padding-top: 20px;
+  }
+  .sidebar-brand {
+    padding-bottom: 18px;
+  }
+  .workspace-switch {
+    margin-bottom: 18px;
+  }
+  .sidebar .nav-link {
+    padding-block: 8px;
+  }
+  .sidebar-bottom {
+    padding-top: 16px;
+  }
+  .sidebar-note {
+    padding: 12px;
+  }
+  .sidebar-note > svg {
+    display: none;
+  }
+  .help-link {
+    padding-block: 14px;
+  }
+}
+@media (max-width: 700px) {
+  .transaction-grid {
+    height: clamp(260px, 48dvh, 420px);
+  }
+  .transaction-grid .ag-paging-row-summary-panel {
+    margin-left: 0;
+  }
+  .transaction-toolbar {
+    padding: 12px;
+  }
+  .table-search {
+    min-width: 0;
+    width: 100%;
+  }
+  .date-range {
+    flex: 1;
+    min-width: 130px;
+  }
+  .date-range input {
+    width: 100%;
+    max-width: none;
+  }
+  .about-features {
+    grid-template-columns: minmax(0, 1fr);
+  }
+  .about-features article,
+  .about-scope {
+    padding: 24px;
+  }
+}
 .sidebar {
   overflow-y: auto;
   overscroll-behavior: contain;
