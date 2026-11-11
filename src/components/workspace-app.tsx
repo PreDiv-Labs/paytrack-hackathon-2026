@@ -397,9 +397,6 @@ export function WorkspaceApp({
           <Link href="/about" target="_blank" rel="noopener noreferrer" className="help-link">
             <CircleHelp size={17} /> About PayTrack <ArrowUpRight size={14} />
           </Link>
-          <div className="sidebar-foot">
-            <span className="live-dot" /> Sandbox environment <LockKeyhole size={12} />
-          </div>
         </div>
       </aside>
       <div className="app-main">
