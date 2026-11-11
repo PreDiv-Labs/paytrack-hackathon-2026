@@ -38,9 +38,9 @@ import {
   LockKeyhole,
   CircleHelp,
   LoaderCircle,
-  SlidersHorizontal,
 } from "lucide-react";
 import type { LucideIcon } from "lucide-react";
+import AnalyticsExplorer from "./analytics-explorer";
 import { Brand } from "./brand";
 import { Button } from "./ui/button";
 import type { Workspace } from "@/lib/workspace";
@@ -673,18 +673,22 @@ export function WorkspaceApp({
               <div className="overview-middle">
                 <section className="panel cashflow-panel">
                   <PanelHead
-                    title="Cash flow"
-                    subtitle="A little perspective on money in and out."
+                    title="Your month, in motion"
+                    subtitle="Cumulative received minus sent. A view of your recorded net flow."
                     action={
-                      <span className="chart-key">
-                        <i className="green-bg" />
-                        Received <i className="purple-bg" />
-                        Sent
-                      </span>
+                      <Link href={href("analytics")} className="text-link">
+                        Explore <ArrowUpRight size={14} />
+                      </Link>
                     }
                   />
                   {a.evidence.length ? (
-                    <Charts analytics={a} />
+                    <>
+                      <div className="flow-highlight">
+                        <strong>{money(a.net, currency)}</strong>
+                        <span>net recorded flow · {currency}</span>
+                      </div>
+                      <Charts analytics={a} kind="net" />
+                    </>
                   ) : (
                     <div className="empty-chart">
                       <div className="chart-gridlines">
@@ -709,31 +713,55 @@ export function WorkspaceApp({
                     </div>
                   )}
                 </section>
-                <section className="panel breakdown-panel">
+                <section className="panel dashboard-actions">
                   <PanelHead
-                    title="Spending breakdown"
-                    subtitle="Where your recorded spending goes."
+                    title="Make your next move"
+                    subtitle="A few small steps. A clearer picture."
                   />
-                  {a.breakdown.length ? (
-                    <Charts analytics={a} kind="categories" />
-                  ) : (
-                    <div className="breakdown-empty">
-                      <div className="empty-donut">
-                        <span>
-                          <strong>—</strong>
-                          <small>No spending yet</small>
+                  <div className="quick-action-list">
+                    {[
+                      {
+                        destination: "pay",
+                        icon: Wallet,
+                        title: "Send a payment",
+                        text: "Pay securely with PayPal Sandbox",
+                        color: "purple",
+                      },
+                      {
+                        destination: "divide-pay",
+                        icon: Users,
+                        title: "Split something together",
+                        text: "One expense, everyone's fair share",
+                        color: "blue",
+                      },
+                      {
+                        destination: "budgets",
+                        icon: Target,
+                        title: "Give spending a plan",
+                        text: "Set a category budget for this month",
+                        color: "green",
+                      },
+                    ].map(({ destination, icon: Icon, title, text, color }) => (
+                      <Link href={href(destination)} className="quick-action" key={destination}>
+                        <span className={"icon-box " + color}>
+                          <Icon size={19} />
                         </span>
-                      </div>
-                      <p>
-                        Categories appear after your
-                        <br />
-                        first verified outgoing payment.
-                      </p>
-                    </div>
-                  )}
-                  <Link href={href("analytics")} className="panel-bottom-link">
-                    Explore analytics <ArrowRight size={14} />
-                  </Link>
+                        <span>
+                          <strong>{title}</strong>
+                          <small>{text}</small>
+                        </span>
+                        <ArrowUpRight size={16} />
+                      </Link>
+                    ))}
+                  </div>
+                  <div className="dashboard-pulse">
+                    <span className="live-dot" />
+                    <span>
+                      {a.count
+                        ? a.count + " verified captures this month"
+                        : "Ready for your first verified payment"}
+                    </span>
+                  </div>
                 </section>
               </div>
               <div className="overview-lower">
@@ -1218,54 +1246,7 @@ export function WorkspaceApp({
           )}
           {section === "analytics" && (
             <>
-              <div className="stat-grid three">
-                {[
-                  { label: "Recorded spending", value: a.sent },
-                  { label: "Recorded income", value: a.received },
-                  { label: "Net cash flow", value: a.net },
-                ].map((s) => (
-                  <article className="stat-card" key={s.label}>
-                    <span className="muted">{s.label}</span>
-                    <strong className="stat-value">{money(s.value, currency)}</strong>
-                    <small className="muted">
-                      {month} · {currency}
-                    </small>
-                  </article>
-                ))}
-              </div>
-              <div className="two-columns">
-                <section className="panel">
-                  <PanelHead
-                    title="Daily cash flow"
-                    subtitle="Separate currencies. Clear comparisons."
-                  />
-                  {a.evidence.length ? (
-                    <Charts analytics={a} />
-                  ) : (
-                    <Empty
-                      icon={ChartNoAxesCombined}
-                      title="Patterns need a starting point"
-                      description="Your first verified payment will start your cash flow chart."
-                      action={connectAction}
-                    />
-                  )}
-                </section>
-                <section className="panel">
-                  <PanelHead
-                    title="Spending by category"
-                    subtitle="Gross outgoing captures, based on your checkout category."
-                  />
-                  {a.breakdown.length ? (
-                    <Charts analytics={a} kind="categories" />
-                  ) : (
-                    <Empty
-                      icon={SlidersHorizontal}
-                      title="No category activity yet"
-                      description="Categories are chosen at checkout. We never infer a merchant or invent a spending category."
-                    />
-                  )}
-                </section>
-              </div>
+              <AnalyticsExplorer analytics={a} onEvidence={evidence} />
               <section className="panel evidence-panel">
                 <PanelHead
                   title="The facts behind the view"

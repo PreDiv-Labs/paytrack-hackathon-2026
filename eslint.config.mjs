@@ -5,5 +5,5 @@ export default defineConfig([
   ...nextVitals,
   ...nextTs,
   { files: ["scripts/*.cjs"], rules: { "@typescript-eslint/no-require-imports": "off" } },
-  globalIgnores([".next/**", "next-env.d.ts"]),
+  globalIgnores([".next/**", "artifacts/**", "next-env.d.ts"]),
 ]);
