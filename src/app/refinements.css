@@ -66,6 +66,8 @@ textarea {
   font-size: 14px;
 }
 .topbar {
+  position: relative;
+  z-index: 50;
   backdrop-filter: blur(16px);
 }
 .flow-highlight {

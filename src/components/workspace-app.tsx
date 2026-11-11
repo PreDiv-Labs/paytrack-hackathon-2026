@@ -1,5 +1,5 @@
 "use client";
-import { useMemo, useState, useTransition, type FormEvent } from "react";
+import { useEffect, useRef, useMemo, useState, useTransition, type FormEvent } from "react";
 import Link from "next/link";
 import { useRouter, useSearchParams } from "next/navigation";
 import dynamic from "next/dynamic";
@@ -184,6 +184,25 @@ export function WorkspaceApp({
     [kind, setKind] = useState("all"),
     [from, setFrom] = useState(""),
     [to, setTo] = useState("");
+  const userMenuRef = useRef<HTMLDivElement>(null);
+  useEffect(() => {
+    if (!userMenu) return;
+    const dismiss = (event: PointerEvent) => {
+      if (!userMenuRef.current?.contains(event.target as Node)) setUserMenu(false);
+    };
+    const escape = (event: KeyboardEvent) => {
+      if (event.key === "Escape") {
+        setUserMenu(false);
+        userMenuRef.current?.querySelector<HTMLButtonElement>(".avatar-button")?.focus();
+      }
+    };
+    document.addEventListener("pointerdown", dismiss);
+    document.addEventListener("keydown", escape);
+    return () => {
+      document.removeEventListener("pointerdown", dismiss);
+      document.removeEventListener("keydown", escape);
+    };
+  }, [userMenu]);
   const [selected, setSelected] = useState<Entry | null>(null),
     [evidenceIds, setEvidenceIds] = useState<string[] | null>(null),
     [budgetOpen, setBudgetOpen] = useState(false),
@@ -438,29 +457,31 @@ export function WorkspaceApp({
               <Bell size={19} />
               {data.notifications.some((n) => !n.readAt) && <i />}
             </button>
-            <div className="user-menu-wrap">
+            <div className="user-menu-wrap" ref={userMenuRef}>
               <button
                 className="avatar-button"
                 aria-label="Open user menu"
                 aria-expanded={userMenu}
+                aria-controls="profile-dropdown"
+                type="button"
                 onClick={() => setUserMenu(!userMenu)}
               >
                 {data.user.name?.slice(0, 1).toUpperCase() ?? "P"}
               </button>
               {userMenu && (
-                <div className="dropdown user-dropdown">
+                <div className="dropdown user-dropdown" id="profile-dropdown">
                   <strong>{preview ? "Product preview" : data.user.name}</strong>
                   <small>{data.user.email ?? "Connect your PayPal identity"}</small>
-                  <Link href={href("settings")}>
+                  <Link href={href("settings")} onClick={() => setUserMenu(false)}>
                     <Settings size={15} /> Settings
                   </Link>
                   {preview ? (
-                    <Link href="/login">
+                    <Link href="/login" onClick={() => setUserMenu(false)}>
                       <Link2 size={15} /> Connect PayPal
                     </Link>
                   ) : (
                     <form action={logout}>
-                      <button>
+                      <button type="submit">
                         <LogOut size={15} /> Sign out
                       </button>
                     </form>
