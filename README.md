@@ -98,10 +98,10 @@ Browser QA uses the actual rendered UI at desktop and mobile widths. See [verifi
 - This is a Sandbox hackathon implementation, not a production financial system. It does not handle disputes, reversals, live money, account-wide reporting, or multi-merchant onboarding. The interactive analytics endpoint currently caps history at 10,000 entries and fails clearly above that limit.
 - No persistent conversational history, email reminders, automatic budget changes, automatic refunds, or Studio Agent Framework are claimed.
 - Auth.js is pinned to a beta version. Payment retries are bounded; pending/failed provider outcomes are never presented as successful captures.
-- The prepared deployment manifest is not a deployment. Publishing, deployment and account settings require user authorization.
+- The Render deployment is authorized and prepared, but service creation still needs working Render access. PayPal dashboard authentication settings remain deferred.
 
 ## Submission materials
 
 [Research and sponsor decisions](docs/RESEARCH.md) · [Architecture](docs/ARCHITECTURE.md) · [Under-three-minute demo](docs/DEMO.md) · [Devpost draft](docs/DEVPOST.md) · [Verification](docs/VERIFICATION.md).
 
-MIT licensed. The repository is prepared locally; it has not been published. Confirm all completion gates before making the repository public or submitting to Devpost.
+MIT licensed. The deployment source is uploaded to the private repository https://github.com/Preet-0/paytrack-hackathon-2026. It has not been made public. Confirm all completion gates before making the repository public or submitting to Devpost.

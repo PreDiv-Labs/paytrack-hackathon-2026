@@ -38,3 +38,7 @@ Production build, TypeScript, ESLint, Prisma validation, all ten tests, Prettier
 ## Gemini credential follow-up
 
 A user-provided key was saved only in ignored `.env`, and the local production server was restarted. The official models-list request returned HTTP 200 and listed the configured `gemini-3.8-flash` model. The first generation-contract request timed out at 25 seconds. An alternate `gemini-2.5-flash` request returned HTTP 404, so the configured model was not changed. No financial ledger records or identity details were sent in these connectivity checks. A successful structured-generation response is still required before end-to-end AI is claimed.
+
+## Render deployment preparation
+
+The user authorized Render deployment with PayPal OAuth configuration deferred. The code is pushed to private GitHub repository `Preet-0/paytrack-hackathon-2026` on branch `main`. Source scanning checked 78 files and found no local environment secrets. The Render configuration uses the free plan, a database health endpoint at `/api/health`, and `RENDER_EXTERNAL_URL` for the stable application origin. The new origin regression, lint, TypeScript and production build passed. Render is signed in in Edge, but native screen capture/click control failed even after the window was restored. No Render service has been created or claimed live. Working Render integration or a privately supplied API key is the remaining deployment access gate.

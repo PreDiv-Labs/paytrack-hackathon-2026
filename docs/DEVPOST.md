@@ -1,6 +1,7 @@
 # Devpost submission draft
 
-**Name:** PayTrack  
+**Name:** PayTrack
+
 **Tagline:** Your AI Financial Copilot for PayPal.
 
 ## Inspiration
