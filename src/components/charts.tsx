@@ -8,11 +8,15 @@ export default function Charts({
   kind = "cashflow",
   interval = "daily",
   display = "line",
+  compact = false,
+  height = 280,
 }: {
   analytics: ReturnType<typeof analyze>;
-  kind?: "cashflow" | "categories" | "net" | "ranking";
+  kind?: "cashflow" | "categories" | "net" | "ranking" | "cumulative";
   interval?: "daily" | "weekly";
   display?: "line" | "bar";
+  compact?: boolean;
+  height?: number;
 }) {
   let net = 0;
   const daily = analytics.daily.map((row) => ({ ...row, net: (net += row.received - row.sent) }));
@@ -82,9 +86,18 @@ export default function Charts({
             ],
             legend: { enabled: false },
           }
-        : kind === "cashflow"
+        : kind === "cashflow" || kind === "cumulative"
           ? {
-              data,
+              data:
+                kind === "cumulative"
+                  ? data.map((row, index) => ({
+                      ...row,
+                      sent: data.slice(0, index + 1).reduce((sum, item) => sum + item.sent, 0),
+                      received: data
+                        .slice(0, index + 1)
+                        .reduce((sum, item) => sum + item.received, 0),
+                    }))
+                  : data,
               series:
                 display === "bar"
                   ? [
@@ -109,20 +122,24 @@ export default function Charts({
                     ]
                   : [
                       {
-                        type: "line",
+                        type: "area",
                         xKey: "day",
                         yKey: "received",
                         yName: "Received",
                         stroke: "#118762",
+                        fill: "#32c68b",
+                        fillOpacity: 0.08,
                         strokeWidth: 2.5,
                         marker: { enabled: false },
                       },
                       {
-                        type: "line",
+                        type: "area",
                         xKey: "day",
                         yKey: "sent",
                         yName: "Sent",
                         stroke: "#6037D7",
+                        fill: "#8750ed",
+                        fillOpacity: 0.08,
                         strokeWidth: 2.5,
                         marker: { enabled: false },
                       },
@@ -139,20 +156,20 @@ export default function Charts({
                 {
                   type: "donut",
                   angleKey: "amount",
-                  calloutLabelKey: "category",
-                  sectorLabelKey: "amount",
+                  calloutLabelKey: compact ? undefined : "category",
+                  sectorLabelKey: compact ? undefined : "amount",
                   innerRadiusRatio: 0.75,
-                  fills: ["#6037D7", "#9c85df", "#118762", "#92cabb", "#d0c5f1", "#cdd2df"],
+                  fills: ["#7036f6", "#bda3fa", "#30c78a", "#dcddea", "#9c85df", "#92cabb"],
                   strokes: ["#fff"],
                 },
               ],
-              legend: { position: "bottom" },
+              legend: { position: "bottom", enabled: !compact },
             };
   return (
     <AgCharts
       options={{
         ...options,
-        height: 280,
+        height,
         background: { fill: "transparent" },
         padding: { top: 12, bottom: 4, left: 8, right: 12 },
       }}

@@ -41,6 +41,7 @@ import {
 } from "lucide-react";
 import type { LucideIcon } from "lucide-react";
 import AnalyticsExplorer from "./analytics-explorer";
+import { SpendingSparkline } from "./spending-sparkline";
 import { Brand } from "./brand";
 import { Button } from "./ui/button";
 import type { Workspace } from "@/lib/workspace";
@@ -485,7 +486,7 @@ export function WorkspaceApp({
               </div>
               <h1>
                 {section === "overview"
-                  ? "Your financial picture."
+                  ? "Your money, in focus."
                   : section === "copilot"
                     ? "Ask a better money question."
                     : title}
@@ -599,7 +600,11 @@ export function WorkspaceApp({
                   <Sparkles size={23} />
                 </div>
                 <div>
-                  <strong>A clear picture starts with a verified payment.</strong>
+                  <strong>
+                    {a.breakdown[0]
+                      ? `${a.breakdown[0].category} is your largest spending category.`
+                      : "Your next chapter starts with a little clarity."}
+                  </strong>
                   <p>
                     {data.entries.length
                       ? "Your activity is ready to explore. Ask your copilot what's changed."
@@ -617,18 +622,18 @@ export function WorkspaceApp({
               <div className="stat-grid">
                 {[
                   {
+                    label: "Monthly spending",
+                    value: a.sent,
+                    icon: ArrowUpRight,
+                    color: "purple",
+                    caption: "Recorded outgoing activity this month",
+                  },
+                  {
                     label: "Money received",
                     value: a.received,
                     icon: ArrowDownLeft,
                     color: "green",
                     caption: "Verified incoming activity",
-                  },
-                  {
-                    label: "Money sent",
-                    value: a.sent,
-                    icon: ArrowUpRight,
-                    color: "purple",
-                    caption: "Verified outgoing activity",
                   },
                   {
                     label: "Net cash flow",
@@ -646,7 +651,10 @@ export function WorkspaceApp({
                     count: true,
                   },
                 ].map(({ label, value, icon: Icon, color, caption, count }) => (
-                  <article className="stat-card" key={label}>
+                  <article
+                    className={`stat-card ${label === "Monthly spending" ? "spending-hero-card" : ""} ${label === "Net cash flow" && value < 0 ? "negative-flow" : ""}`}
+                    key={label}
+                  >
                     <div className="stat-top">
                       <span>{label}</span>
                       <span className={`stat-icon ${color}`}>
@@ -654,6 +662,9 @@ export function WorkspaceApp({
                       </span>
                     </div>
                     <strong className="stat-value">{count ? value : money(value, currency)}</strong>
+                    {label === "Monthly spending" && (
+                      <SpendingSparkline values={a.daily.map((row) => row.sent)} />
+                    )}
                     <div className="stat-caption">
                       <span className="tiny-dot" />
                       {caption}
@@ -664,8 +675,8 @@ export function WorkspaceApp({
               <div className="overview-middle">
                 <section className="panel cashflow-panel">
                   <PanelHead
-                    title="Your month, in motion"
-                    subtitle="Cumulative received minus sent. A view of your recorded net flow."
+                    title="Income vs. expenses"
+                    subtitle="Your recorded money in and out, accumulated through the month."
                     action={
                       <Link href={href("analytics")} className="text-link">
                         Explore <ArrowUpRight size={14} />
@@ -678,7 +689,7 @@ export function WorkspaceApp({
                         <strong>{money(a.net, currency)}</strong>
                         <span>net recorded flow · {currency}</span>
                       </div>
-                      <Charts analytics={a} kind="net" />
+                      <Charts analytics={a} kind="cumulative" />
                     </>
                   ) : (
                     <div className="empty-chart">
@@ -704,55 +715,63 @@ export function WorkspaceApp({
                     </div>
                   )}
                 </section>
-                <section className="panel dashboard-actions">
+                <section className="panel overview-categories">
                   <PanelHead
-                    title="Make your next move"
-                    subtitle="A few small steps. A clearer picture."
+                    title="Spending by category"
+                    subtitle="Where your recorded outgoing captures go."
                   />
-                  <div className="quick-action-list">
-                    {[
-                      {
-                        destination: "pay",
-                        icon: Wallet,
-                        title: "Send a payment",
-                        text: "Pay securely with PayPal Sandbox",
-                        color: "purple",
-                      },
-                      {
-                        destination: "divide-pay",
-                        icon: Users,
-                        title: "Split something together",
-                        text: "One expense, everyone's fair share",
-                        color: "blue",
-                      },
-                      {
-                        destination: "budgets",
-                        icon: Target,
-                        title: "Give spending a plan",
-                        text: "Set a category budget for this month",
-                        color: "green",
-                      },
-                    ].map(({ destination, icon: Icon, title, text, color }) => (
-                      <Link href={href(destination)} className="quick-action" key={destination}>
-                        <span className={"icon-box " + color}>
-                          <Icon size={19} />
-                        </span>
+                  {a.breakdown.length ? (
+                    <div className="category-chart-layout">
+                      <div className="donut-with-total">
+                        <Charts analytics={a} kind="categories" compact height={215} />
+                        <div className="donut-total">
+                          <strong>
+                            {money(
+                              a.breakdown.reduce((sum, row) => sum + row.amountMinor, 0),
+                              currency,
+                            )}
+                          </strong>
+                          <small>Total spent</small>
+                        </div>
+                      </div>
+                      <div className="overview-category-legend">
+                        {a.breakdown.slice(0, 4).map((row, index) => (
+                          <div key={row.category}>
+                            <span>
+                              <i
+                                style={{
+                                  background: ["#7036f6", "#bda3fa", "#30c78a", "#dcddea"][index],
+                                }}
+                              />
+                              {row.category}
+                            </span>
+                            <strong>{money(row.amountMinor, currency)}</strong>
+                            <small>
+                              {(
+                                (row.amountMinor /
+                                  a.breakdown.reduce((sum, item) => sum + item.amountMinor, 0)) *
+                                100
+                              ).toFixed(1)}
+                              %
+                            </small>
+                          </div>
+                        ))}
+                      </div>
+                    </div>
+                  ) : (
+                    <div className="category-placeholder">
+                      <div className="empty-donut">
                         <span>
-                          <strong>{title}</strong>
-                          <small>{text}</small>
+                          <strong>—</strong>
+                          <small>No spending yet</small>
                         </span>
-                        <ArrowUpRight size={16} />
-                      </Link>
-                    ))}
-                  </div>
-                  <div className="dashboard-pulse">
-                    <span className="live-dot" />
-                    <span>
-                      {a.count
-                        ? a.count + " verified captures this month"
-                        : "Ready for your first verified payment"}
-                    </span>
-                  </div>
+                      </div>
+                      <p>Your first outgoing payment brings this view to life.</p>
+                    </div>
+                  )}
+                  <Link href={href("analytics")} className="panel-bottom-link">
+                    Explore your spending <ArrowUpRight size={14} />
+                  </Link>
                 </section>
               </div>
               <div className="overview-lower">
@@ -807,85 +826,61 @@ export function WorkspaceApp({
                     />
                   )}
                 </section>
-                <section className="panel insights-panel">
+                <section className="panel budget-overview">
                   <PanelHead
-                    title="A little insight"
+                    title="Your budget, your pace"
+                    subtitle="Set a target. Keep the important things in view."
                     action={
-                      <span className="ai-label">
-                        <Sparkles size={12} /> COPILOT
-                      </span>
+                      <Link href={href("budgets")} className="text-link">
+                        Manage budgets <ArrowRight size={14} />
+                      </Link>
                     }
                   />
-                  <div className="insight-note">
-                    <span className="icon-box purple">
-                      <Sparkles size={20} />
-                    </span>
-                    <h3>
-                      {a.count
-                        ? "The facts behind your financial picture."
-                        : "Good advice starts with good evidence."}
-                    </h3>
-                    <p>
-                      {a.count
-                        ? a.facts[1].text
-                        : "Your copilot is ready when your activity is. Make your first Sandbox payment to unlock a grounded spending summary."}
-                    </p>
-                  </div>
-                  <Link href={href("copilot")} className="button full">
-                    Meet your copilot <ArrowRight size={15} />
-                  </Link>
-                  <div className="insight-foot">
-                    <ShieldCheck size={13} /> Built on verified records, always.
-                  </div>
+                  {budgets.length ? (
+                    <div className="budget-mini-list">
+                      {budgets.slice(0, 3).map((b) => {
+                        const spent =
+                          a.breakdown.find((c) => c.category === b.category)?.amountMinor ?? 0;
+                        return (
+                          <div key={b.id}>
+                            <span>
+                              {b.category}
+                              <b>
+                                {money(spent, currency)}{" "}
+                                <small>/ {money(b.limitMinor, currency)}</small>
+                              </b>
+                            </span>
+                            <progress
+                              className={spent / b.limitMinor >= 0.85 ? "budget-caution" : ""}
+                              max={b.limitMinor}
+                              value={spent}
+                            />
+                            <small className="budget-utilization">
+                              {Math.round((spent / b.limitMinor) * 100)}% of monthly target
+                            </small>
+                          </div>
+                        );
+                      })}
+                    </div>
+                  ) : (
+                    <div className="budget-start">
+                      <span className="icon-box neutral">
+                        <Target size={20} />
+                      </span>
+                      <div>
+                        <strong>A plan makes a difference.</strong>
+                        <p>
+                          Create your first monthly category budget, or build some history for a
+                          recommendation.
+                        </p>
+                      </div>
+                      <button className="button small" onClick={() => quickBudget()}>
+                        <Plus size={14} /> Set a budget
+                      </button>
+                    </div>
+                  )}
                 </section>
               </div>
-              <section className="panel budget-overview">
-                <PanelHead
-                  title="Your budget, your pace"
-                  subtitle="Set a target. Keep the important things in view."
-                  action={
-                    <Link href={href("budgets")} className="text-link">
-                      Manage budgets <ArrowRight size={14} />
-                    </Link>
-                  }
-                />
-                {budgets.length ? (
-                  <div className="budget-mini-list">
-                    {budgets.slice(0, 3).map((b) => {
-                      const spent =
-                        a.breakdown.find((c) => c.category === b.category)?.amountMinor ?? 0;
-                      return (
-                        <div key={b.id}>
-                          <span>
-                            {b.category}
-                            <b>
-                              {money(spent, currency)}{" "}
-                              <small>/ {money(b.limitMinor, currency)}</small>
-                            </b>
-                          </span>
-                          <progress max={b.limitMinor} value={spent} />
-                        </div>
-                      );
-                    })}
-                  </div>
-                ) : (
-                  <div className="budget-start">
-                    <span className="icon-box neutral">
-                      <Target size={20} />
-                    </span>
-                    <div>
-                      <strong>A plan makes a difference.</strong>
-                      <p>
-                        Create your first monthly category budget, or build some history for a
-                        recommendation.
-                      </p>
-                    </div>
-                    <button className="button small" onClick={() => quickBudget()}>
-                      <Plus size={14} /> Set a budget
-                    </button>
-                  </div>
-                )}
-              </section>
             </>
           )}
           {section === "transactions" && (

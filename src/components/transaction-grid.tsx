@@ -6,13 +6,13 @@ import type { Entry } from "@/lib/analytics";
 import { money } from "@/lib/money";
 ModuleRegistry.registerModules([AllCommunityModule]);
 const theme = themeQuartz.withParams({
-  accentColor: "#6037D7",
+  accentColor: "#7138ed",
   backgroundColor: "#fff",
-  borderColor: "#E7EAF1",
-  headerBackgroundColor: "#fafbfe",
+  borderColor: "#e6e3f1",
+  headerBackgroundColor: "#faf8fe",
   fontFamily: "Inter, Segoe UI, sans-serif",
   fontSize: 13,
-  rowHeight: 60,
+  rowHeight: 52,
   headerHeight: 44,
   wrapperBorderRadius: 10,
 });
