@@ -2,6 +2,7 @@ import { z } from "zod";
 import { db } from "@/lib/db";
 import { requireUser, sameOrigin, errorResponse, HttpError } from "@/lib/security";
 import { currencies, toMinor, splitEqual } from "@/lib/money";
+import { canCollectSharedExpenses } from "@/lib/collection-access";
 const schema = z.object({
   title: z.string().trim().min(2).max(100),
   amount: z.string(),
@@ -17,7 +18,7 @@ export async function POST(request: Request) {
     sameOrigin(request);
     const userId = await requireUser();
     const connection = await db.payPalConnection.findUnique({ where: { userId } });
-    if (!process.env.PAYPAL_MERCHANT_ID || connection?.payerId !== process.env.PAYPAL_MERCHANT_ID)
+    if (!canCollectSharedExpenses(connection?.payerId, process.env.PAYPAL_MERCHANT_ID))
       throw new HttpError(
         403,
         "Only the connected Sandbox Business merchant can collect shared expenses. Participant payments go directly to that merchant.",

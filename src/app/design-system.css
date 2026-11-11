@@ -1207,6 +1207,130 @@ textarea:hover {
   backdrop-filter: none;
   -webkit-backdrop-filter: none;
 }
+.collection-guide {
+  margin-bottom: 22px;
+  scroll-margin-top: 24px;
+}
+.collection-role {
+  display: flex;
+  align-items: flex-start;
+  gap: 16px;
+  padding: 26px;
+  background: var(--color-violet-soft);
+}
+.collection-role > div {
+  min-width: 0;
+}
+.collection-role h2 {
+  font-size: 22px;
+  margin: 10px 0;
+}
+.collection-role p {
+  font-size: 14px;
+  line-height: 1.8;
+  color: var(--color-secondary);
+  max-width: 750px;
+}
+.collection-role-grid {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+}
+.collection-role-grid article {
+  padding: 26px;
+  min-width: 0;
+}
+.collection-role-grid article + article {
+  border-left: 1px solid var(--color-border);
+}
+.collection-role-grid h3 {
+  font-size: 18px;
+  margin: 14px 0 10px;
+}
+.collection-role-grid p,
+.organizer-instructions {
+  font-size: 14px;
+  line-height: 1.8;
+  color: var(--color-secondary);
+}
+.collection-role-grid article > form {
+  margin-top: 20px;
+}
+.collection-role-grid article > form > .fine {
+  display: block;
+  margin-top: 8px;
+}
+.organizer-instructions {
+  margin-top: 18px;
+}
+.organizer-instructions summary {
+  cursor: pointer;
+  color: var(--color-primary);
+  font-weight: 600;
+}
+.organizer-instructions ol {
+  padding-left: 22px;
+}
+.organizer-instructions li + li {
+  margin-top: 9px;
+}
+.participant-link-form {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+.participant-link-form label {
+  font-size: 14px;
+  font-weight: 550;
+}
+.participant-link-form input {
+  width: 100%;
+}
+.participant-link-form .button {
+  align-self: flex-start;
+}
+.participant-link-form .participant-link-error {
+  color: var(--color-negative-strong);
+  font-size: 13px;
+}
+.collection-ready {
+  display: inline-flex;
+  gap: 8px;
+  align-items: center;
+  color: var(--color-positive);
+  margin-top: 20px;
+  font-size: 14px;
+}
+.collection-footnote {
+  border-top: 1px solid var(--color-border);
+  padding: 16px 26px;
+  color: var(--color-secondary);
+  font-size: 12px;
+}
+@media (max-width: 700px) {
+  .collection-role-grid {
+    grid-template-columns: minmax(0, 1fr);
+  }
+  .collection-role-grid article + article {
+    border-left: 0;
+    border-top: 1px solid var(--color-border);
+  }
+  .collection-role,
+  .collection-role-grid article {
+    padding: 20px;
+  }
+  .collection-role {
+    flex-wrap: wrap;
+  }
+  .collection-role h2 {
+    font-size: 20px;
+  }
+  .collection-footnote {
+    padding: 16px 20px;
+  }
+  .participant-link-form .button {
+    width: 100%;
+  }
+}
 .modal.navigation-drawer {
   left: 0;
   top: 0;

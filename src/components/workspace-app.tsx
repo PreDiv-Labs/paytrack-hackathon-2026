@@ -43,6 +43,7 @@ import type { LucideIcon } from "lucide-react";
 import AnalyticsExplorer from "./analytics-explorer";
 import { SpendingSparkline } from "./spending-sparkline";
 import { Brand } from "./brand";
+import { DividePayGuide } from "./divide-pay-guide";
 import { categoryColor } from "@/lib/design-system";
 import { BudgetProgress, CategoryBadge } from "./ui/financial";
 import { Button } from "./ui/button";
@@ -528,17 +529,23 @@ export function WorkspaceApp({
                   <Plus size={16} /> Create budget
                 </button>
               ) : section === "divide-pay" ? (
-                <button
-                  className="button primary"
-                  onClick={() => {
-                    if (!gate()) {
-                      setError("");
-                      setGroupOpen(true);
-                    }
-                  }}
-                >
-                  <Plus size={16} /> New shared expense
-                </button>
+                !data.canCollectSharedExpenses ? (
+                  <a className="button primary" href="#organizer-guide">
+                    How it works <ArrowRight size={16} />
+                  </a>
+                ) : (
+                  <button
+                    className="button primary"
+                    onClick={() => {
+                      if (!gate()) {
+                        setError("");
+                        setGroupOpen(true);
+                      }
+                    }}
+                  >
+                    <Plus size={16} /> New shared expense
+                  </button>
+                )
               ) : section === "transactions" ? (
                 <button className="button" onClick={exportCsv}>
                   <Download size={16} /> Export CSV
@@ -1099,14 +1106,12 @@ export function WorkspaceApp({
           )}
           {section === "divide-pay" && (
             <>
-              <div className="notice">
-                <Info size={17} />
-                <span>
-                  Shared expenses collect payments to the configured Sandbox Business merchant. This
-                  is not escrow or peer-to-peer money transfer. Each participant signs in and
-                  approves their own checkout.
-                </span>
-              </div>
+              <DividePayGuide
+                canCollect={data.canCollectSharedExpenses}
+                identityReady={!!data.connection?.payerId}
+                merchantReady={data.readiness.merchant}
+                preview={preview}
+              />
               {data.groups.length ? (
                 <div className="groups-grid">
                   {data.groups.map((g) => (
@@ -1161,7 +1166,7 @@ export function WorkspaceApp({
                     </section>
                   ))}
                 </div>
-              ) : (
+              ) : data.canCollectSharedExpenses ? (
                 <section className="panel split-empty">
                   <Empty
                     icon={Users}
@@ -1171,7 +1176,7 @@ export function WorkspaceApp({
                       <button
                         className="button primary"
                         onClick={() => {
-                          if (!gate()) setGroupOpen(true);
+                          if (!gate() && data.canCollectSharedExpenses) setGroupOpen(true);
                         }}
                       >
                         <Plus size={16} /> Create shared expense
@@ -1192,7 +1197,7 @@ export function WorkspaceApp({
                     </span>
                   </div>
                 </section>
-              )}
+              ) : null}
             </>
           )}
           {section === "connection" && (

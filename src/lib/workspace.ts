@@ -2,6 +2,7 @@ import "server-only";
 import { db } from "./db";
 import { readiness } from "./env";
 import { analyze, type Entry } from "./analytics";
+import { canCollectSharedExpenses } from "./collection-access";
 export async function workspace(
   userId: string,
   currency = "USD",
@@ -29,6 +30,10 @@ export async function workspace(
   ]);
   if (entries.length > 10000) throw new Error("Ledger exceeds the interactive analysis limit.");
   return {
+    canCollectSharedExpenses: canCollectSharedExpenses(
+      connection?.payerId,
+      process.env.PAYPAL_MERCHANT_ID,
+    ),
     user,
     entries: entries.map((e) => ({ ...e, occurredAt: e.occurredAt.toISOString() })),
     budgets: budgets.map((b) => ({ ...b, createdAt: b.createdAt.toISOString() })),
@@ -53,6 +58,7 @@ export async function workspace(
 export type Workspace = Awaited<ReturnType<typeof workspace>>;
 export function emptyWorkspace(): Workspace {
   return {
+    canCollectSharedExpenses: false,
     user: { name: "Your workspace", email: null },
     entries: [],
     budgets: [],

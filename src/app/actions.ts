@@ -6,3 +6,6 @@ export async function login() {
 export async function logout() {
   await signOut({ redirectTo: "/" });
 }
+export async function switchPayPalAccount() {
+  await signOut({ redirectTo: "/login" });
+}
