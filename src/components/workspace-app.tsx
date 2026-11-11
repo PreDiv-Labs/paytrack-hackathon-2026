@@ -77,18 +77,22 @@ function Modal({
   title,
   description,
   children,
+  navigationDrawer = false,
 }: {
   open: boolean;
   onOpenChange: (v: boolean) => void;
   title: string;
   description: string;
   children: React.ReactNode;
+  navigationDrawer?: boolean;
 }) {
   return (
     <Dialog.Root open={open} onOpenChange={onOpenChange}>
       <Dialog.Portal>
-        <Dialog.Overlay className="modal-overlay" />
-        <Dialog.Content className="modal">
+        <Dialog.Overlay
+          className={`modal-overlay ${navigationDrawer ? "navigation-overlay" : ""}`}
+        />
+        <Dialog.Content className={`modal ${navigationDrawer ? "navigation-drawer" : ""}`}>
           <div className="modal-header">
             <div>
               <Dialog.Title>{title}</Dialog.Title>
@@ -1374,6 +1378,7 @@ export function WorkspaceApp({
       </div>
       <Modal
         open={mobile}
+        navigationDrawer
         onOpenChange={setMobile}
         title="Your workspace"
         description="Navigate PayTrack"

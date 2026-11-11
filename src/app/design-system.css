@@ -1202,6 +1202,60 @@ textarea:hover {
     margin-right: 4px;
   }
 }
+.modal-overlay.navigation-overlay {
+  background: color-mix(in srgb, var(--color-navy) 12%, transparent);
+  backdrop-filter: none;
+  -webkit-backdrop-filter: none;
+}
+.modal.navigation-drawer {
+  left: 0;
+  top: 0;
+  bottom: 0;
+  transform: none;
+  width: min(280px, 76vw);
+  max-width: none;
+  height: 100dvh;
+  max-height: 100dvh;
+  border-radius: 0 20px 20px 0;
+  padding: 22px 16px;
+  overflow-y: auto;
+  overscroll-behavior: contain;
+  animation: navigation-enter 0.2s ease-out;
+}
+.navigation-drawer .modal-header {
+  margin-bottom: 20px;
+  gap: 8px;
+}
+.navigation-drawer .modal-header h2 {
+  font-size: 20px;
+}
+.navigation-drawer .modal-header p {
+  font-size: 13px;
+}
+.navigation-drawer .mobile-nav {
+  display: grid;
+  gap: 3px;
+}
+.navigation-drawer .nav-link {
+  margin: 0;
+  min-height: 44px;
+  padding: 10px;
+}
+.navigation-drawer .nav-link.active::before {
+  display: none;
+}
+.navigation-drawer .icon-button {
+  min-width: 36px;
+  min-height: 36px;
+}
+@keyframes navigation-enter {
+  from {
+    transform: translateX(-100%);
+  }
+  to {
+    transform: translateX(0);
+  }
+}
 @media (prefers-reduced-motion: reduce) {
   *,
   *::before,
