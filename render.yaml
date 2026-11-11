@@ -1,0 +1,29 @@
+services:
+  - type: web
+    name: paytrack
+    runtime: node
+    plan: free
+    buildCommand: npm ci && npm run build
+    startCommand: npm start -- --port $PORT
+    healthCheckPath: /api/health
+    envVars:
+      - key: NODE_VERSION
+        value: 24.22.0
+      - key: PAYPAL_ENVIRONMENT
+        value: sandbox
+      - key: AUTH_SECRET
+        generateValue: true
+      - key: DATABASE_URL
+        sync: false
+      - key: PAYPAL_CLIENT_ID
+        sync: false
+      - key: PAYPAL_CLIENT_SECRET
+        sync: false
+      - key: PAYPAL_MERCHANT_ID
+        sync: false
+      - key: PAYPAL_WEBHOOK_ID
+        sync: false
+      - key: GEMINI_API_KEY
+        sync: false
+      - key: GEMINI_MODEL
+        value: gemini-3.8-flash

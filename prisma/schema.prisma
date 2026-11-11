@@ -1,0 +1,173 @@
+generator client {
+  provider = "prisma-client-js"
+}
+datasource db {
+  provider = "postgresql"
+  url = env("DATABASE_URL")
+}
+model User {
+  id String @id @default(cuid())
+  name String?
+  email String? @unique
+  emailVerified DateTime?
+  image String?
+  createdAt DateTime @default(now())
+  accounts Account[]
+  sessions Session[]
+  connection PayPalConnection?
+  payments Payment[]
+  ledger LedgerEntry[]
+  budgets Budget[]
+  groups SplitGroup[]
+  notifications Notification[]
+  insights Insight[]
+}
+model Account {
+  id String @id @default(cuid())
+  userId String
+  type String
+  provider String
+  providerAccountId String
+  refresh_token String?
+  access_token String?
+  expires_at Int?
+  token_type String?
+  scope String?
+  id_token String?
+  session_state String?
+  user User @relation(fields: [userId], references: [id], onDelete: Cascade)
+  @@unique([provider, providerAccountId])
+  @@index([userId])
+}
+model Session {
+  id String @id @default(cuid())
+  sessionToken String @unique
+  userId String
+  expires DateTime
+  user User @relation(fields: [userId], references: [id], onDelete: Cascade)
+  @@index([userId])
+}
+model VerificationToken {
+  identifier String
+  token String @unique
+  expires DateTime
+  @@unique([identifier, token])
+}
+model PayPalConnection {
+  id String @id @default(cuid())
+  userId String @unique
+  subject String @unique
+  payerId String? @unique
+  connectedAt DateTime @default(now())
+  user User @relation(fields: [userId], references: [id], onDelete: Cascade)
+}
+model Payment {
+  id String @id @default(cuid())
+  ownerId String
+  requestKey String @unique
+  description String
+  category String @default("Uncategorized")
+  amountMinor Int
+  currency String
+  status String @default("CREATED")
+  orderId String? @unique
+  captureId String? @unique
+  payerId String?
+  merchantId String?
+  approvalUrl String?
+  participantId String? @unique
+  createdAt DateTime @default(now())
+  completedAt DateTime?
+  owner User @relation(fields: [ownerId], references: [id])
+  participant Participant? @relation(fields: [participantId], references: [id])
+  ledger LedgerEntry[]
+  contribution Contribution?
+  @@index([ownerId, createdAt])
+  @@index([status])
+}
+model LedgerEntry {
+  id String @id @default(cuid())
+  userId String
+  paymentId String
+  reference String
+  kind String @default("CAPTURE")
+  direction String
+  amountMinor Int
+  currency String
+  description String
+  category String
+  occurredAt DateTime @default(now())
+  user User @relation(fields: [userId], references: [id])
+  payment Payment @relation(fields: [paymentId], references: [id])
+  @@unique([userId, reference, direction])
+  @@index([userId, currency, occurredAt])
+}
+model Category {
+  id String @id @default(cuid())
+  name String @unique
+}
+model Budget {
+  id String @id @default(cuid())
+  userId String
+  category String
+  limitMinor Int
+  currency String
+  month String
+  createdAt DateTime @default(now())
+  user User @relation(fields: [userId], references: [id], onDelete: Cascade)
+  @@unique([userId, category, currency, month])
+}
+model SplitGroup {
+  id String @id @default(cuid())
+  creatorId String
+  title String
+  amountMinor Int
+  currency String
+  createdAt DateTime @default(now())
+  creator User @relation(fields: [creatorId], references: [id])
+  participants Participant[]
+  @@index([creatorId])
+}
+model Participant {
+  id String @id @default(cuid())
+  groupId String
+  name String
+  shareMinor Int
+  token String @unique @default(uuid())
+  group SplitGroup @relation(fields: [groupId], references: [id])
+  payments Payment[]
+  contribution Contribution?
+  @@index([groupId])
+}
+model Contribution {
+  id String @id @default(cuid())
+  participantId String @unique
+  paymentId String @unique
+  amountMinor Int
+  participant Participant @relation(fields: [participantId], references: [id])
+  payment Payment @relation(fields: [paymentId], references: [id])
+}
+model Insight {
+  id String @id @default(cuid())
+  userId String
+  content Json
+  createdAt DateTime @default(now())
+  user User @relation(fields: [userId], references: [id])
+  @@index([userId, createdAt])
+}
+model Notification {
+  id String @id @default(cuid())
+  userId String
+  title String
+  message String
+  readAt DateTime?
+  createdAt DateTime @default(now())
+  user User @relation(fields: [userId], references: [id])
+  @@index([userId, createdAt])
+}
+model WebhookEvent {
+  id String @id
+  eventType String
+  processedAt DateTime?
+  createdAt DateTime @default(now())
+}

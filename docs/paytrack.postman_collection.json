@@ -1,0 +1,71 @@
+{
+  "info": {
+    "name": "PayTrack — local authorized API checks",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+    "description": "Use your own browser-authenticated session cookie privately. Never save or publish cookies or secrets in this collection. Mutations require a valid session and same-origin header. Payment creation does not approve or capture money; buyer approval happens on PayPal. Each request must be reviewed and sent manually."
+  },
+  "variable": [
+    { "key": "baseUrl", "value": "http://localhost:3000" },
+    { "key": "sessionCookieName", "value": "authjs.session-token" },
+    { "key": "sessionCookie", "value": "" },
+    { "key": "requestKey", "value": "" },
+    { "key": "paymentId", "value": "" }
+  ],
+  "item": [
+    {
+      "name": "Read my workspace",
+      "request": {
+        "method": "GET",
+        "url": "{{baseUrl}}/api/workspace",
+        "header": [{ "key": "Cookie", "value": "{{sessionCookieName}}={{sessionCookie}}" }]
+      }
+    },
+    {
+      "name": "Ask grounded copilot",
+      "request": {
+        "method": "POST",
+        "url": "{{baseUrl}}/api/copilot",
+        "header": [
+          { "key": "Cookie", "value": "{{sessionCookieName}}={{sessionCookie}}" },
+          { "key": "Origin", "value": "{{baseUrl}}" },
+          { "key": "Content-Type", "value": "application/json" }
+        ],
+        "body": {
+          "mode": "raw",
+          "raw": "{\n  \"question\": \"Where did I spend the most?\",\n  \"currency\": \"USD\",\n  \"month\": \"2026-11\"\n}"
+        }
+      }
+    },
+    {
+      "name": "Create reviewed Sandbox order (no approval)",
+      "request": {
+        "method": "POST",
+        "url": "{{baseUrl}}/api/payments",
+        "header": [
+          { "key": "Cookie", "value": "{{sessionCookieName}}={{sessionCookie}}" },
+          { "key": "Origin", "value": "{{baseUrl}}" },
+          { "key": "Content-Type", "value": "application/json" }
+        ],
+        "body": {
+          "mode": "raw",
+          "raw": "{\n  \"description\": \"Reviewed Sandbox API test\",\n  \"category\": \"Other\",\n  \"amount\": \"1.00\",\n  \"currency\": \"USD\",\n  \"requestKey\": \"{{requestKey}}\"\n}"
+        },
+        "description": "Set requestKey to a fresh UUID for a new reviewed payment. Reuse that exact UUID when retrying the same payment. Review amount and merchant in the app; never automate buyer approval."
+      }
+    },
+    {
+      "name": "Capture a buyer-approved Sandbox order",
+      "request": {
+        "method": "POST",
+        "url": "{{baseUrl}}/api/payments/{{paymentId}}/capture",
+        "header": [
+          { "key": "Cookie", "value": "{{sessionCookieName}}={{sessionCookie}}" },
+          { "key": "Origin", "value": "{{baseUrl}}" },
+          { "key": "Content-Type", "value": "application/json" }
+        ],
+        "body": { "mode": "raw", "raw": "{}" },
+        "description": "Only send after the buyer explicitly approved this exact order on PayPal. This initiates Sandbox capture and verifies it. It must not be run against a live environment."
+      }
+    }
+  ]
+}
