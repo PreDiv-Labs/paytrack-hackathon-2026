@@ -91,6 +91,9 @@ function Modal({
       <Dialog.Portal>
         <Dialog.Overlay
           className={`modal-overlay ${navigationDrawer ? "navigation-overlay" : ""}`}
+          style={
+            navigationDrawer ? { backdropFilter: "none", WebkitBackdropFilter: "none" } : undefined
+          }
         />
         <Dialog.Content className={`modal ${navigationDrawer ? "navigation-drawer" : ""}`}>
           <div className="modal-header">
