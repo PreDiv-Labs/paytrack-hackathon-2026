@@ -2,6 +2,7 @@
 import { AgCharts } from "ag-charts-react";
 import { AllCommunityModule, ModuleRegistry, type AgChartOptions } from "ag-charts-community";
 import type { analyze } from "@/lib/analytics";
+import { colors, categoryColor } from "@/lib/design-system";
 ModuleRegistry.registerModules([AllCommunityModule]);
 export default function Charts({
   analytics,
@@ -33,12 +34,12 @@ export default function Charts({
           };
         });
   const axes = {
-    x: { type: "category" as const, label: { fontSize: 10, color: "#9096a6" } },
+    x: { type: "category" as const, label: { fontSize: 12, color: colors.secondary } },
     y: {
       type: "number" as const,
       label: {
-        fontSize: 10,
-        color: "#9096a6",
+        fontSize: 12,
+        color: colors.secondary,
         formatter: ({ value }: { value: number }) =>
           new Intl.NumberFormat("en", { notation: "compact", maximumFractionDigits: 1 }).format(
             value,
@@ -57,9 +58,9 @@ export default function Charts({
               xKey: "day",
               yKey: "net",
               yName: `Net flow (${analytics.currency})`,
-              stroke: "#6037d7",
+              stroke: colors.primary,
               strokeWidth: 3,
-              fill: "#9271eb",
+              fill: colors.lavender,
               fillOpacity: 0.1,
               marker: { enabled: false },
             },
@@ -79,7 +80,8 @@ export default function Charts({
                 xKey: "category",
                 yKey: "amount",
                 yName: `Spending (${analytics.currency})`,
-                fill: "#8764df",
+                fill: colors.primary,
+                itemStyler: ({ datum }) => ({ fill: categoryColor(datum.category) }),
                 strokeWidth: 0,
                 cornerRadius: 5,
               },
@@ -106,7 +108,7 @@ export default function Charts({
                         xKey: "day",
                         yKey: "received",
                         yName: "Received",
-                        fill: "#42ad90",
+                        fill: colors.income,
                         cornerRadius: 4,
                         strokeWidth: 0,
                       },
@@ -115,7 +117,7 @@ export default function Charts({
                         xKey: "day",
                         yKey: "sent",
                         yName: "Sent",
-                        fill: "#8764df",
+                        fill: colors.primary,
                         cornerRadius: 4,
                         strokeWidth: 0,
                       },
@@ -126,8 +128,8 @@ export default function Charts({
                         xKey: "day",
                         yKey: "received",
                         yName: "Received",
-                        stroke: "#118762",
-                        fill: "#32c68b",
+                        stroke: colors.income,
+                        fill: colors.income,
                         fillOpacity: 0.08,
                         strokeWidth: 2.5,
                         marker: { enabled: false },
@@ -137,8 +139,8 @@ export default function Charts({
                         xKey: "day",
                         yKey: "sent",
                         yName: "Sent",
-                        stroke: "#6037D7",
-                        fill: "#8750ed",
+                        stroke: colors.primary,
+                        fill: colors.primary,
                         fillOpacity: 0.08,
                         strokeWidth: 2.5,
                         marker: { enabled: false },
@@ -159,8 +161,10 @@ export default function Charts({
                   calloutLabelKey: compact ? undefined : "category",
                   sectorLabelKey: compact ? undefined : "amount",
                   innerRadiusRatio: 0.75,
-                  fills: ["#7036f6", "#bda3fa", "#30c78a", "#dcddea", "#9c85df", "#92cabb"],
-                  strokes: ["#fff"],
+                  calloutLabel: { fontSize: 12, color: colors.secondary },
+                  sectorLabel: { fontSize: 12, color: colors.text },
+                  fills: analytics.breakdown.map((row) => categoryColor(row.category)),
+                  strokes: [colors.surface],
                 },
               ],
               legend: { position: "bottom", enabled: !compact },
@@ -169,6 +173,20 @@ export default function Charts({
     <AgCharts
       options={{
         ...options,
+        theme: {
+          baseTheme: "ag-default",
+          params: {
+            fontFamily: "Inter Variable, Inter, sans-serif",
+            tooltipBackgroundColor: colors.navy,
+            tooltipTextColor: colors.onFeature,
+          },
+          overrides: {
+            common: {
+              title: { fontFamily: "Inter Variable, Inter, sans-serif" },
+              legend: { item: { label: { fontSize: 13, color: colors.secondary } } },
+            },
+          },
+        },
         height,
         background: { fill: "transparent" },
         padding: { top: 12, bottom: 4, left: 8, right: 12 },

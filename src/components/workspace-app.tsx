@@ -43,6 +43,8 @@ import type { LucideIcon } from "lucide-react";
 import AnalyticsExplorer from "./analytics-explorer";
 import { SpendingSparkline } from "./spending-sparkline";
 import { Brand } from "./brand";
+import { categoryColor } from "@/lib/design-system";
+import { BudgetProgress, CategoryBadge } from "./ui/financial";
 import { Button } from "./ui/button";
 import type { Workspace } from "@/lib/workspace";
 import { analyze, type Entry } from "@/lib/analytics";
@@ -411,7 +413,8 @@ export function WorkspaceApp({
               <Menu size={21} />
             </button>
             <span className="breadcrumb">
-              Workspace <ChevronRight size={13} /> <strong>{title}</strong>
+              <span className="breadcrumb-root">Workspace</span>
+              <ChevronRight size={13} /> <strong>{title}</strong>
             </span>
           </div>
           <div className="topbar-right">
@@ -735,12 +738,12 @@ export function WorkspaceApp({
                         </div>
                       </div>
                       <div className="overview-category-legend">
-                        {a.breakdown.slice(0, 4).map((row, index) => (
+                        {a.breakdown.slice(0, 4).map((row) => (
                           <div key={row.category}>
                             <span>
                               <i
                                 style={{
-                                  background: ["#7036f6", "#bda3fa", "#30c78a", "#dcddea"][index],
+                                  background: categoryColor(row.category),
                                 }}
                               />
                               {row.category}
@@ -850,14 +853,11 @@ export function WorkspaceApp({
                                 <small>/ {money(b.limitMinor, currency)}</small>
                               </b>
                             </span>
-                            <progress
-                              className={spent / b.limitMinor >= 0.85 ? "budget-caution" : ""}
-                              max={b.limitMinor}
-                              value={spent}
+                            <BudgetProgress
+                              spent={spent}
+                              limit={b.limitMinor}
+                              category={b.category}
                             />
-                            <small className="budget-utilization">
-                              {Math.round((spent / b.limitMinor) * 100)}% of monthly target
-                            </small>
                           </div>
                         );
                       })}
@@ -970,7 +970,9 @@ export function WorkspaceApp({
                                 <Target size={19} />
                               </span>
                               <div>
-                                <h3>{b.category}</h3>
+                                <h3>
+                                  <CategoryBadge category={b.category} />
+                                </h3>
                                 <p>
                                   {money(Math.max(0, b.limitMinor - spent), currency)} remaining
                                   {spent > b.limitMinor
@@ -985,7 +987,11 @@ export function WorkspaceApp({
                                 Edit
                               </button>
                             </div>
-                            <progress value={spent} max={b.limitMinor} />
+                            <BudgetProgress
+                              spent={spent}
+                              limit={b.limitMinor}
+                              category={b.category}
+                            />
                             <small>
                               {money(spent, currency)} spent{" "}
                               <span>{money(b.limitMinor, currency)} target</span>

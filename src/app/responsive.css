@@ -77,7 +77,7 @@
     font-size: 24px;
   }
   .overview-banner > .text-link {
-    font-size: 9px;
+    font-size: var(--font-caption);
   }
   .chart-key {
     display: none;
@@ -131,7 +131,7 @@
     gap: 25px;
   }
   .hero-trust {
-    font-size: 8px;
+    font-size: var(--font-caption);
   }
   .login-layout {
     gap: 45px;
@@ -153,7 +153,7 @@
   }
   .connection-details > div {
     gap: 10px;
-    font-size: 10px;
+    font-size: var(--font-caption);
   }
   .pay-card {
     padding-left: 20px;
@@ -182,13 +182,13 @@
     padding: 9px 6px;
   }
   .workspace-switch strong {
-    font-size: 9px;
+    font-size: var(--font-caption);
   }
   .workspace-switch small {
-    font-size: 8px;
+    font-size: var(--font-caption);
   }
   .nav-link {
-    font-size: 11px;
+    font-size: var(--font-caption);
     gap: 9px;
     padding-left: 10px;
   }
@@ -205,11 +205,11 @@
     font-size: 26px;
   }
   .page-heading p {
-    font-size: 10px;
+    font-size: var(--font-caption);
     max-width: 350px;
   }
   .heading-actions .button {
-    font-size: 10px;
+    font-size: var(--font-caption);
     padding: 9px 11px;
   }
   .stat-grid {
@@ -222,7 +222,7 @@
     font-size: 28px;
   }
   .stat-caption {
-    font-size: 9px;
+    font-size: var(--font-caption);
   }
   .overview-middle,
   .overview-lower {
@@ -236,16 +236,16 @@
     display: none;
   }
   .overview-banner p {
-    font-size: 9px;
+    font-size: var(--font-caption);
   }
   .panel-heading {
     padding: 16px;
   }
   .panel-heading h2 {
-    font-size: 12px;
+    font-size: var(--font-small);
   }
   .panel-heading p {
-    font-size: 9px;
+    font-size: var(--font-caption);
   }
   .empty-donut {
     width: 123px;
@@ -268,13 +268,13 @@
   }
   .budget-start p {
     max-width: 280px;
-    font-size: 9px;
+    font-size: var(--font-caption);
   }
   .budget-start .button {
-    font-size: 9px;
+    font-size: var(--font-caption);
   }
   .workspace-footer {
-    font-size: 8px;
+    font-size: var(--font-caption);
   }
   .workspace-footer > span:last-child {
     display: none;
@@ -307,7 +307,7 @@
     font-size: 48px;
   }
   .login-story > p {
-    font-size: 12px;
+    font-size: var(--font-small);
   }
   .hero {
     gap: 24px;
@@ -318,14 +318,14 @@
     letter-spacing: -2.6px;
   }
   .hero-copy > p {
-    font-size: 12px;
+    font-size: var(--font-small);
   }
   .hero-actions {
     flex-direction: column;
     align-items: flex-start;
   }
   .hero-actions .button {
-    font-size: 11px;
+    font-size: var(--font-caption);
   }
   .hero-art {
     min-height: 390px;
@@ -344,10 +344,10 @@
     right: 0;
   }
   .art-note strong {
-    font-size: 9px;
+    font-size: var(--font-caption);
   }
   .art-note small {
-    font-size: 7px;
+    font-size: var(--font-caption);
   }
   .orbit-two {
     width: 310px;
@@ -413,14 +413,14 @@
     margin-right: 7px;
   }
   .breadcrumb {
-    font-size: 10px;
+    font-size: var(--font-caption);
     gap: 6px;
   }
   .breadcrumb > svg {
     width: 10px;
   }
   .badge.sandbox {
-    font-size: 8px;
+    font-size: var(--font-caption);
     padding: 3px 6px;
   }
   .topbar-right > .icon-button {
@@ -429,11 +429,11 @@
   .avatar-button {
     height: 26px;
     width: 26px;
-    font-size: 10px;
+    font-size: var(--font-caption);
   }
   .preview-bar {
     padding: 8px 20px;
-    font-size: 8px;
+    font-size: var(--font-caption);
   }
   .preview-bar span {
     gap: 5px;
@@ -443,7 +443,7 @@
   }
   .preview-bar a {
     gap: 4px;
-    font-size: 8px;
+    font-size: var(--font-caption);
   }
   .workspace-content {
     padding: 25px 18px 0;
@@ -454,7 +454,7 @@
     margin-bottom: 24px;
   }
   .page-heading .eyebrow {
-    font-size: 7px;
+    font-size: var(--font-caption);
     letter-spacing: 1.1px;
   }
   .page-heading h1 {
@@ -463,7 +463,7 @@
     letter-spacing: -0.9px;
   }
   .page-heading p {
-    font-size: 10px;
+    font-size: var(--font-caption);
     max-width: 270px;
     line-height: 1.8;
   }
@@ -473,7 +473,7 @@
   }
   .heading-actions .button {
     padding: 8px;
-    font-size: 9px;
+    font-size: var(--font-caption);
     min-height: 33px;
     gap: 5px;
   }
@@ -489,7 +489,7 @@
     margin-bottom: 18px;
   }
   .report-context {
-    font-size: 8px;
+    font-size: var(--font-caption);
     flex-wrap: wrap;
     gap: 5px;
     max-width: 170px;
@@ -510,10 +510,10 @@
   }
   .month-filter input {
     width: 106px;
-    font-size: 9px;
+    font-size: var(--font-caption);
   }
   .select-wrap select {
-    font-size: 9px;
+    font-size: var(--font-caption);
     padding-left: 8px;
     padding-right: 23px;
   }
@@ -532,12 +532,12 @@
     width: 19px;
   }
   .overview-banner strong {
-    font-size: 10px;
+    font-size: var(--font-caption);
     line-height: 1.7;
     display: block;
   }
   .overview-banner p {
-    font-size: 9px;
+    font-size: var(--font-caption);
     line-height: 1.8;
     margin-top: 4px;
   }
@@ -549,7 +549,7 @@
     padding: 14px 13px;
   }
   .stat-top {
-    font-size: 10px;
+    font-size: var(--font-caption);
     gap: 5px;
   }
   .stat-icon {
@@ -564,7 +564,7 @@
     margin: 14px 0;
   }
   .stat-caption {
-    font-size: 8px;
+    font-size: var(--font-caption);
     line-height: 1.7;
     align-items: flex-start;
   }
@@ -587,10 +587,10 @@
     padding: 17px 16px 12px;
   }
   .panel-heading h2 {
-    font-size: 12px;
+    font-size: var(--font-small);
   }
   .panel-heading p {
-    font-size: 9px;
+    font-size: var(--font-caption);
   }
   .breakdown-panel {
     min-height: 285px;
@@ -604,7 +604,7 @@
     width: 132px;
   }
   .breakdown-empty > p {
-    font-size: 9px;
+    font-size: var(--font-caption);
     margin-top: 13px;
   }
   .panel-bottom-link {
@@ -617,7 +617,7 @@
     min-height: 220px;
   }
   .panel-heading .text-link {
-    font-size: 9px;
+    font-size: var(--font-caption);
     gap: 5px;
     white-space: nowrap;
   }
@@ -634,10 +634,10 @@
     flex: 1;
   }
   .budget-start strong {
-    font-size: 10px;
+    font-size: var(--font-caption);
   }
   .budget-start p {
-    font-size: 9px;
+    font-size: var(--font-caption);
     line-height: 1.8;
   }
   .budget-start > .button {
@@ -650,7 +650,7 @@
     padding: 25px 18px;
   }
   .empty p {
-    font-size: 10px;
+    font-size: var(--font-caption);
   }
   .transaction-toolbar {
     padding: 13px;
@@ -660,10 +660,10 @@
     flex-basis: 100%;
   }
   .table-search input {
-    font-size: 10px;
+    font-size: var(--font-caption);
   }
   .table-caption {
-    font-size: 9px;
+    font-size: var(--font-caption);
     padding: 10px 13px;
   }
   .table-caption > span:last-child {
@@ -673,7 +673,7 @@
     height: 480px;
   }
   .notice {
-    font-size: 10px;
+    font-size: var(--font-caption);
     padding: 12px;
     margin-top: 15px;
     gap: 8px;
@@ -688,12 +688,12 @@
     gap: 17px;
   }
   .stack-form label {
-    font-size: 10px;
+    font-size: var(--font-caption);
   }
   .stack-form input,
   .stack-form select,
   .stack-form textarea {
-    font-size: 12px;
+    font-size: var(--font-small);
     padding: 10px;
   }
   .form-row {
@@ -704,7 +704,7 @@
     gap: 10px;
   }
   .payment-destination small {
-    font-size: 8px;
+    font-size: var(--font-caption);
   }
   .pay-step {
     padding-left: 18px;
@@ -714,7 +714,7 @@
     padding: 15px;
   }
   .copilot-top .badge {
-    font-size: 8px;
+    font-size: var(--font-caption);
     padding: 4px 5px;
   }
   .copilot-top .icon-box {
@@ -722,10 +722,10 @@
     height: 32px;
   }
   .copilot-top strong {
-    font-size: 11px;
+    font-size: var(--font-caption);
   }
   .copilot-top small {
-    font-size: 8px;
+    font-size: var(--font-caption);
   }
   .copilot-conversation {
     padding: 17px;
@@ -737,7 +737,7 @@
     font-size: 27px;
   }
   .copilot-welcome p {
-    font-size: 10px;
+    font-size: var(--font-caption);
     max-width: 260px;
   }
   .prompt-grid {
@@ -759,7 +759,7 @@
   }
   .prompt-grid button span {
     flex-basis: 100%;
-    font-size: 9px;
+    font-size: var(--font-caption);
   }
   .prompt-grid button > svg:first-child {
     width: 15px;
@@ -769,10 +769,10 @@
     padding: 7px;
   }
   .copilot-input input {
-    font-size: 10px;
+    font-size: var(--font-caption);
   }
   .copilot-disclaimer {
-    font-size: 7px;
+    font-size: var(--font-caption);
   }
   .copilot-main {
     min-height: 590px;
@@ -784,25 +784,25 @@
     padding: 13px 10px;
   }
   .three .stat-card > .muted {
-    font-size: 9px;
+    font-size: var(--font-caption);
   }
   .three .stat-value {
     font-size: 22px;
     letter-spacing: -0.8px;
   }
   .three small.muted {
-    font-size: 8px;
+    font-size: var(--font-caption);
   }
   .evidence-panel > article {
     padding: 15px 16px;
     gap: 10px;
   }
   .evidence-panel p {
-    font-size: 10px;
+    font-size: var(--font-caption);
   }
   .evidence-panel > article > .text-link {
     margin-left: 28px;
-    font-size: 9px;
+    font-size: var(--font-caption);
   }
   .evidence-panel > article > svg {
     width: 16px;
@@ -814,14 +814,14 @@
     font-size: 19px;
   }
   .split-empty .empty p {
-    font-size: 11px;
+    font-size: var(--font-caption);
   }
   .split-steps {
     gap: 8px;
     padding-top: 15px;
   }
   .split-steps span {
-    font-size: 8px;
+    font-size: var(--font-caption);
     gap: 5px;
     flex-direction: column;
     text-align: center;
@@ -837,27 +837,27 @@
     flex-wrap: wrap;
   }
   .connection-brand h2 {
-    font-size: 14px;
+    font-size: var(--font-body);
   }
   .connection-brand p {
-    font-size: 9px;
+    font-size: var(--font-caption);
   }
   .connection-brand > .badge {
     margin-left: 54px;
-    font-size: 8px;
+    font-size: var(--font-caption);
   }
   .connection-details > div {
-    font-size: 10px;
+    font-size: var(--font-caption);
     padding: 14px 0;
   }
   .connection-details .badge {
-    font-size: 8px;
+    font-size: var(--font-caption);
   }
   .connection-actions .button {
-    font-size: 10px;
+    font-size: var(--font-caption);
   }
   .connection-readiness > div {
-    font-size: 9px;
+    font-size: var(--font-caption);
   }
   .settings-layout {
     grid-template-columns: 1fr;
@@ -876,14 +876,14 @@
     font-size: 19px;
   }
   .modal-header p {
-    font-size: 11px;
+    font-size: var(--font-caption);
   }
   .detail-list > div {
-    font-size: 10px;
+    font-size: var(--font-caption);
     gap: 16px;
   }
   .toast {
-    font-size: 10px;
+    font-size: var(--font-caption);
     padding: 10px;
     gap: 7px;
   }
@@ -906,7 +906,7 @@
     display: none;
   }
   .landing-nav .button {
-    font-size: 10px;
+    font-size: var(--font-caption);
     padding: 9px 10px;
     min-height: 34px;
   }
@@ -921,7 +921,7 @@
     margin: 20px 0;
   }
   .hero-copy > p {
-    font-size: 13px;
+    font-size: var(--font-body);
     max-width: 400px;
   }
   .hero-actions {
@@ -930,12 +930,12 @@
     margin: 27px 0 18px;
   }
   .hero-actions .button {
-    font-size: 10px;
+    font-size: var(--font-caption);
     padding: 11px 12px;
     gap: 6px;
   }
   .hero-trust {
-    font-size: 8px;
+    font-size: var(--font-caption);
     line-height: 1.8;
     gap: 5px;
   }
@@ -961,10 +961,10 @@
     padding: 13px;
   }
   .art-note strong {
-    font-size: 10px;
+    font-size: var(--font-caption);
   }
   .art-note small {
-    font-size: 8px;
+    font-size: var(--font-caption);
   }
   .orbit-one {
     width: 280px;
@@ -984,7 +984,7 @@
   }
   .landing-features .eyebrow {
     max-width: 100%;
-    font-size: 8px;
+    font-size: var(--font-caption);
   }
   .landing-features h2 {
     margin-top: 15px;
@@ -992,23 +992,23 @@
   }
   .landing-features article {
     padding-top: 24px;
-    border-top: 1px solid #f0edf5;
+    border-top: 1px solid var(--color-violet-soft);
   }
   .landing-features article > svg {
     margin-bottom: 13px;
   }
   .landing-features h3 {
-    font-size: 14px;
+    font-size: var(--font-body);
   }
   .landing-features p {
-    font-size: 12px;
+    font-size: var(--font-small);
     max-width: 370px;
   }
   .landing-footer {
     padding: 23px 24px;
     flex-wrap: wrap;
     gap: 15px;
-    font-size: 9px;
+    font-size: var(--font-caption);
   }
   .landing-footer > span:nth-child(2) {
     display: none;
@@ -1020,7 +1020,7 @@
     font-size: 22px;
   }
   .login-nav > a:last-child {
-    font-size: 9px;
+    font-size: var(--font-caption);
     gap: 5px;
   }
   .login-nav > a:last-child svg {
@@ -1042,7 +1042,7 @@
     margin: 18px 0;
   }
   .login-story > p {
-    font-size: 12px;
+    font-size: var(--font-small);
     max-width: 350px;
   }
   .login-principle {
@@ -1078,19 +1078,19 @@
     gap: 6px;
   }
   .recommendation-list .text-link {
-    font-size: 9px;
+    font-size: var(--font-caption);
   }
   .answer-brand small {
-    font-size: 8px;
+    font-size: var(--font-caption);
   }
   .fact p {
-    font-size: 11px;
+    font-size: var(--font-caption);
   }
   .chat-question {
-    font-size: 11px;
+    font-size: var(--font-caption);
   }
   .copilot-answer h3 {
-    font-size: 12px;
+    font-size: var(--font-small);
   }
 }
 @media (prefers-reduced-motion: reduce) {
@@ -1120,7 +1120,7 @@
 }
 .share-card > p {
   color: var(--muted);
-  font-size: 12px;
+  font-size: var(--font-small);
 }
 .share-amount {
   display: block;
@@ -1130,38 +1130,38 @@
 }
 .share-card > .fine {
   margin-top: 23px;
-  font-size: 10px;
+  font-size: var(--font-caption);
   line-height: 1.9;
 }
 .nav-link {
-  font-size: 13px;
+  font-size: var(--font-body);
 }
 .stat-top {
-  font-size: 11px;
+  font-size: var(--font-caption);
 }
 .stat-caption {
-  font-size: 10px;
+  font-size: var(--font-caption);
 }
 .panel-heading p {
-  font-size: 11px;
+  font-size: var(--font-caption);
 }
 .empty p {
-  font-size: 11px;
+  font-size: var(--font-caption);
 }
 .page-heading p {
-  font-size: 12px;
+  font-size: var(--font-small);
 }
 .overview-banner p {
-  font-size: 11px;
+  font-size: var(--font-caption);
 }
 .overview-banner strong {
-  font-size: 12px;
+  font-size: var(--font-small);
 }
 .insight-note p {
-  font-size: 11px;
+  font-size: var(--font-caption);
 }
 .breakdown-empty > p {
-  font-size: 10px;
+  font-size: var(--font-caption);
 }
 @media (max-width: 700px) {
   .share-card {
@@ -1169,27 +1169,27 @@
     padding: 24px;
   }
   .nav-link {
-    font-size: 13px;
+    font-size: var(--font-body);
   }
   .stat-top {
-    font-size: 10px;
+    font-size: var(--font-caption);
   }
   .stat-caption {
-    font-size: 9px;
+    font-size: var(--font-caption);
   }
   .panel-heading p {
-    font-size: 10px;
+    font-size: var(--font-caption);
   }
   .empty p {
-    font-size: 11px;
+    font-size: var(--font-caption);
   }
   .page-heading p {
-    font-size: 11px;
+    font-size: var(--font-caption);
   }
   .overview-banner p {
-    font-size: 10px;
+    font-size: var(--font-caption);
   }
   .overview-banner strong {
-    font-size: 11px;
+    font-size: var(--font-caption);
   }
 }

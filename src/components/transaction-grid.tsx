@@ -4,16 +4,19 @@ import { AgGridReact } from "ag-grid-react";
 import { AllCommunityModule, ModuleRegistry, themeQuartz, type ColDef } from "ag-grid-community";
 import type { Entry } from "@/lib/analytics";
 import { money } from "@/lib/money";
+import { colors } from "@/lib/design-system";
+import { CategoryBadge } from "./ui/financial";
 ModuleRegistry.registerModules([AllCommunityModule]);
 const theme = themeQuartz.withParams({
-  accentColor: "#7138ed",
-  backgroundColor: "#fff",
-  borderColor: "#e6e3f1",
-  headerBackgroundColor: "#faf8fe",
+  accentColor: colors.primary,
+  backgroundColor: colors.surface,
+  borderColor: colors.border,
+  headerBackgroundColor: colors.app,
+  foregroundColor: colors.text,
   fontFamily: "Inter, Segoe UI, sans-serif",
-  fontSize: 13,
-  rowHeight: 52,
-  headerHeight: 44,
+  fontSize: 14,
+  rowHeight: 56,
+  headerHeight: 48,
   wrapperBorderRadius: 10,
 });
 export default function TransactionGrid({
@@ -49,19 +52,33 @@ export default function TransactionGrid({
           }),
         sort: "desc",
       },
-      { field: "category", minWidth: 115 },
+      {
+        field: "category",
+        minWidth: 150,
+        cellRenderer: (p: { value: string }) => <CategoryBadge category={p.value} />,
+      },
       { field: "direction", headerName: "Direction", minWidth: 95 },
       {
         field: "amountMinor",
         headerName: "Amount",
         minWidth: 115,
-        valueFormatter: (p) => money(p.value, p.data?.currency),
+        valueFormatter: (p) =>
+          `${p.data?.direction === "RECEIVED" ? "+" : "−"}${money(p.value, p.data?.currency)}`,
         cellStyle: (p) => ({
-          color: p.data?.direction === "RECEIVED" ? "#118762" : "#17192B",
+          color: p.data?.direction === "RECEIVED" ? colors.positive : colors.negative,
           fontWeight: 600,
         }),
       },
-      { field: "kind", headerName: "Type", minWidth: 95 },
+      {
+        field: "kind",
+        headerName: "Type",
+        minWidth: 110,
+        cellRenderer: (p: { value: string }) => (
+          <span className={`badge ${p.value === "REFUND" ? "amber" : "green"}`}>
+            {p.value === "REFUND" ? "↩ Refund" : "✓ Capture"}
+          </span>
+        ),
+      },
       { field: "reference", headerName: "Verified reference", minWidth: 160 },
     ],
     [],

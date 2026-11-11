@@ -1,3 +1,4 @@
+import { colors } from "@/lib/design-system";
 export function SpendingSparkline({ values }: { values: number[] }) {
   const maximum = Math.max(...values, 1);
   const points = values.map(
@@ -15,15 +16,15 @@ export function SpendingSparkline({ values }: { values: number[] }) {
     >
       <defs>
         <linearGradient id="spending-fill" x1="0" y1="0" x2="0" y2="1">
-          <stop offset="0%" stopColor="#b787ff" stopOpacity=".45" />
-          <stop offset="100%" stopColor="#b787ff" stopOpacity="0" />
+          <stop offset="0%" stopColor={colors.lavender} stopOpacity=".45" />
+          <stop offset="100%" stopColor={colors.lavender} stopOpacity="0" />
         </linearGradient>
       </defs>
       <path d={`${line} L 280 56 L 0 56 Z`} fill="url(#spending-fill)" />
       <path
         d={line}
         fill="none"
-        stroke="#c39aff"
+        stroke={colors.lavender}
         strokeWidth="2.5"
         vectorEffect="non-scaling-stroke"
       />

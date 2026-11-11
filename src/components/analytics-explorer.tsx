@@ -4,6 +4,7 @@ import dynamic from "next/dynamic";
 import { ArrowUpRight, ChartNoAxesCombined, Layers3 } from "lucide-react";
 import type { analyze } from "@/lib/analytics";
 import { money } from "@/lib/money";
+import { categoryColor } from "@/lib/design-system";
 const Charts = dynamic(() => import("./charts"), {
   ssr: false,
   loading: () => <div className="chart-loading skeleton" />,
@@ -156,13 +157,13 @@ export default function AnalyticsExplorer({
             </div>
           </div>
           {a.breakdown.length ? (
-            a.breakdown.map((row, index) => (
+            a.breakdown.map((row) => (
               <div className="category-share" key={row.category}>
                 <div>
                   <span>
                     <i
                       style={{
-                        background: ["#6037d7", "#9c85df", "#118762", "#92cabb"][index % 4],
+                        background: categoryColor(row.category),
                       }}
                     />
                     {row.category}

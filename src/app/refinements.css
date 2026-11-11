@@ -1,14 +1,20 @@
 .app-shell {
-  background: radial-gradient(ellipse at 80% 0%, #f0ebfa70, transparent 50%), #f8f9fc;
+  background:
+    radial-gradient(
+      ellipse at 80% 0%,
+      color-mix(in srgb, var(--color-violet-soft) 44%, transparent),
+      transparent 50%
+    ),
+    var(--color-on-feature);
 }
 .workspace-content {
   animation: content-arrive 0.4s ease-out both;
 }
 .panel,
 .stat-card {
-  border-color: #e9e7f0;
+  border-color: var(--color-border);
   border-radius: 18px;
-  box-shadow: 0 3px 16px #28204403;
+  box-shadow: 0 3px 16px color-mix(in srgb, var(--color-navy) 1%, transparent);
 }
 .stat-card {
   padding: 22px;
@@ -18,7 +24,7 @@
 }
 .stat-card:hover {
   transform: translateY(-3px);
-  box-shadow: 0 12px 30px #39216809;
+  box-shadow: 0 12px 30px color-mix(in srgb, var(--color-navy) 4%, transparent);
 }
 .button,
 .nav-link,
@@ -42,7 +48,7 @@ textarea {
   transform: translateY(-1px);
 }
 .button.primary {
-  box-shadow: 0 4px 12px #6037d724;
+  box-shadow: 0 4px 12px color-mix(in srgb, var(--color-primary-hover) 14%, transparent);
 }
 .button:active,
 .icon-button:active {
@@ -57,13 +63,13 @@ textarea {
 }
 .overview-banner {
   border-radius: 16px;
-  background: linear-gradient(110deg, #f1ebff, #f8f6fe);
+  background: linear-gradient(110deg, var(--color-violet-soft), var(--color-app));
 }
 .panel-heading {
   padding: 23px 24px 17px;
 }
 .panel-heading h2 {
-  font-size: 14px;
+  font-size: var(--font-body);
 }
 .topbar {
   position: relative;
@@ -84,7 +90,7 @@ textarea {
 }
 .flow-highlight span {
   color: var(--muted);
-  font-size: 11px;
+  font-size: var(--font-caption);
 }
 .quick-action-list {
   padding: 0 15px 12px;
@@ -97,7 +103,7 @@ textarea {
   border-radius: 12px;
 }
 .quick-action:hover {
-  background: #f8f6fe;
+  background: var(--color-app);
   transform: translateX(3px);
 }
 .quick-action > span:nth-child(2) {
@@ -105,26 +111,26 @@ textarea {
 }
 .quick-action strong {
   display: block;
-  font-size: 12px;
+  font-size: var(--font-small);
   font-weight: 600;
 }
 .quick-action small {
   display: block;
   color: var(--muted);
-  font-size: 10px;
+  font-size: var(--font-caption);
   margin-top: 4px;
 }
 .quick-action > svg {
-  color: #a29bb6;
+  color: var(--color-lavender);
 }
 .dashboard-pulse {
   padding: 17px 24px;
-  background: #faf9fd;
-  border-top: 1px solid #f0edf6;
+  background: var(--color-on-feature);
+  border-top: 1px solid var(--color-violet-soft);
   display: flex;
   align-items: center;
   gap: 8px;
-  font-size: 10px;
+  font-size: var(--font-caption);
   color: var(--muted);
 }
 .analysis-summary {
@@ -141,7 +147,7 @@ textarea {
 }
 .analysis-summary p {
   color: var(--muted);
-  font-size: 12px;
+  font-size: var(--font-small);
 }
 .analysis-period {
   display: flex;
@@ -150,16 +156,16 @@ textarea {
   padding: 9px 13px;
   border: 1px solid var(--border);
   border-radius: 30px;
-  background: #fff;
+  background: var(--color-surface);
   white-space: nowrap;
-  font-size: 11px;
+  font-size: var(--font-caption);
 }
 .analytics-stats .stat-value {
   font-size: 29px;
   overflow-wrap: anywhere;
 }
 .analytics-stats small {
-  font-size: 11px;
+  font-size: var(--font-caption);
 }
 .explorer-heading {
   display: flex;
@@ -169,8 +175,8 @@ textarea {
   padding: 25px 25px 15px;
 }
 .explorer-heading .eyebrow {
-  font-size: 8px;
-  color: #a69abf;
+  font-size: var(--font-caption);
+  color: var(--color-lavender);
 }
 .explorer-heading h2 {
   font-size: 17px;
@@ -178,7 +184,7 @@ textarea {
   margin: 8px 0 6px;
 }
 .explorer-heading p {
-  font-size: 11px;
+  font-size: var(--font-caption);
   line-height: 1.7;
   color: var(--muted);
 }
@@ -191,15 +197,15 @@ textarea {
   display: inline-flex;
   gap: 3px;
   padding: 4px;
-  background: #f3f2f7;
+  background: var(--color-app);
   border-radius: 11px;
   flex-shrink: 0;
 }
 .segmented button {
   border: 0;
   background: transparent;
-  color: #898298;
-  font-size: 11px;
+  color: var(--color-secondary);
+  font-size: var(--font-caption);
   padding: 7px 12px;
   border-radius: 8px;
   transition:
@@ -208,15 +214,15 @@ textarea {
     color 0.2s;
 }
 .segmented button[aria-pressed="true"] {
-  color: #6037d7;
-  background: white;
-  box-shadow: 0 2px 5px #34284e0c;
+  color: var(--color-primary-hover);
+  background: var(--color-surface);
+  box-shadow: 0 2px 5px color-mix(in srgb, var(--color-navy) 5%, transparent);
 }
 .chart-footnote {
   padding: 15px 25px;
-  border-top: 1px solid #f0edf6;
+  border-top: 1px solid var(--color-violet-soft);
   color: var(--muted);
-  font-size: 10px;
+  font-size: var(--font-caption);
   display: flex;
   align-items: center;
   gap: 8px;
@@ -240,21 +246,21 @@ textarea {
   text-align: center;
   gap: 12px;
   padding: 25px;
-  color: #a291c2;
+  color: var(--color-lavender);
 }
 .analytics-empty h3 {
-  color: #6c627f;
-  font-size: 14px;
+  color: var(--color-secondary);
+  font-size: var(--font-body);
   font-weight: 500;
 }
 .analytics-empty p {
-  font-size: 11px;
+  font-size: var(--font-caption);
   max-width: 260px;
   color: var(--muted);
 }
 .empty-share {
   font-size: 55px;
-  color: #d8d0e6;
+  color: var(--color-feature-muted);
 }
 .category-share {
   margin: 0 25px 20px;
@@ -267,7 +273,7 @@ textarea {
 }
 .category-share > div {
   justify-content: space-between;
-  font-size: 11px;
+  font-size: var(--font-caption);
   gap: 14px;
 }
 .category-share i {
@@ -284,7 +290,7 @@ textarea {
 }
 .category-share small {
   color: var(--muted);
-  font-size: 9px;
+  font-size: var(--font-caption);
 }
 @keyframes content-arrive {
   from {
@@ -389,27 +395,27 @@ textarea {
 }
 .copilot-prose {
   white-space: pre-wrap;
-  font-size: 14px;
+  font-size: var(--font-body);
   line-height: 1.85;
   margin: 16px 0;
 }
 .copilot-service-notice {
-  border: 1px solid #efe0b9;
+  border: 1px solid var(--color-warning-soft);
   border-radius: 10px;
-  background: #fffcf3;
-  color: #8c6d30;
-  font-size: 12px;
+  background: var(--color-on-feature);
+  color: var(--color-warning);
+  font-size: var(--font-small);
   line-height: 1.75;
   padding: 12px;
   margin-top: 15px;
 }
 .answer-scope {
   display: inline-block;
-  background: #f4f1fc;
-  color: #8a74b1;
+  background: var(--color-app);
+  color: var(--color-secondary);
   padding: 5px 9px;
   border-radius: 6px;
-  font-size: 10px;
+  font-size: var(--font-caption);
   margin-bottom: 12px;
 }
 .followup-prompts {
@@ -419,16 +425,16 @@ textarea {
   padding: 10px 22px 0;
 }
 .followup-prompts button {
-  background: #faf9fd;
-  color: #7b669b;
-  border: 1px solid #e9e3f4;
+  background: var(--color-on-feature);
+  color: var(--color-secondary);
+  border: 1px solid var(--color-border);
   border-radius: 18px;
   padding: 8px 11px;
   display: inline-flex;
   align-items: center;
   gap: 7px;
   text-align: left;
-  font-size: 11px;
+  font-size: var(--font-caption);
 }
 .followup-prompts button:hover {
   background: var(--purple-soft);
@@ -445,7 +451,7 @@ textarea {
   max-height: 160px;
   padding: 8px;
   background: transparent;
-  font-size: 13px;
+  font-size: var(--font-body);
 }
 .copilot-guide {
   padding: 24px;
@@ -456,7 +462,7 @@ textarea {
 }
 .copilot-guide p,
 .copilot-storage-note {
-  font-size: 12px;
+  font-size: var(--font-small);
   line-height: 1.85;
   color: var(--muted);
   margin: 12px 0;
@@ -469,7 +475,7 @@ textarea {
     padding: 18px;
   }
   .copilot-prose {
-    font-size: 13px;
+    font-size: var(--font-body);
   }
   .followup-prompts {
     padding-inline: 14px;
@@ -585,7 +591,7 @@ textarea {
 }
 .about-features article {
   padding: 30px;
-  background: white;
+  background: var(--color-surface);
   border: 1px solid var(--border);
   border-radius: 20px;
 }
@@ -596,7 +602,7 @@ textarea {
 .about-features p,
 .about-scope p {
   color: var(--muted);
-  font-size: 14px;
+  font-size: var(--font-body);
   line-height: 1.9;
 }
 .about-scope {
@@ -611,7 +617,7 @@ textarea {
 }
 .about-footer {
   border-top: 1px solid var(--border);
-  font-size: 12px;
+  font-size: var(--font-small);
   color: var(--muted);
 }
 .about-footer a {
@@ -748,12 +754,12 @@ textarea {
 .settings-note,
 .profile-details p,
 .settings-item p {
-  font-size: 13px;
+  font-size: var(--font-body);
   line-height: 1.75;
 }
 .settings-item h3 {
-  font-size: 14px;
-  color: #665a78;
+  font-size: var(--font-body);
+  color: var(--color-secondary);
 }
 .profile-details h3 {
   font-size: 17px;
@@ -770,7 +776,7 @@ textarea {
   overflow-wrap: anywhere;
 }
 .settings-layout .button {
-  font-size: 12px;
+  font-size: var(--font-small);
   min-height: 42px;
   white-space: normal;
   text-align: center;
@@ -875,7 +881,7 @@ textarea {
     padding-top: 0;
   }
   .page-heading p {
-    font-size: 13px;
+    font-size: var(--font-body);
     max-width: 100%;
   }
   .page-heading h1 {
@@ -886,7 +892,7 @@ textarea {
   }
   .report-context {
     max-width: none;
-    font-size: 11px;
+    font-size: var(--font-caption);
   }
   .report-filters {
     margin-left: auto;
@@ -917,13 +923,13 @@ textarea {
   .panel-heading p,
   .quick-action small,
   .explorer-heading p {
-    font-size: 12px;
+    font-size: var(--font-small);
   }
   .panel-heading {
     flex-wrap: wrap;
   }
   .workspace-footer {
-    font-size: 10px;
+    font-size: var(--font-caption);
   }
   .modal {
     max-height: calc(100dvh - 32px);
@@ -963,10 +969,10 @@ textarea {
   }
   .month-filter input {
     width: 100%;
-    font-size: 12px;
+    font-size: var(--font-small);
   }
   .select-wrap select {
-    font-size: 12px;
+    font-size: var(--font-small);
   }
   .form-row {
     grid-template-columns: minmax(0, 1fr);
@@ -975,15 +981,15 @@ textarea {
     gap: 10px;
   }
   .overview-banner p {
-    font-size: 11px;
+    font-size: var(--font-caption);
   }
   .preview-bar {
     flex-wrap: wrap;
-    font-size: 10px;
+    font-size: var(--font-caption);
     padding: 10px 14px;
   }
   .preview-bar a {
-    font-size: 10px;
+    font-size: var(--font-caption);
   }
   .chart-controls {
     width: 100%;
