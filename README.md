@@ -33,7 +33,7 @@ See `.env.example`. Required server values:
 - `PAYPAL_CLIENT_ID`, `PAYPAL_CLIENT_SECRET`: Sandbox Business app credentials.
 - `PAYPAL_MERCHANT_ID`: Sandbox Business payer/merchant ID. The prepared workspace verified it privately from an unapproved Orders API response; no capture occurred.
 - `PAYPAL_WEBHOOK_ID`: the webhook registration for this app and deployed endpoint.
-- Optional `GEMINI_API_KEY`, `GEMINI_MODEL=gemini-3.8-flash`: enables structured evidence selection. Without it, deterministic summaries continue working and the UI says AI is unavailable.
+- Optional `GEMINI_API_KEY`, `GEMINI_MODEL=gemini-3-flash-preview`: enables conversational answers and read-only query planning. Without it, question-specific calculated results remain available with a clear provider status.
 
 Never commit `.env`, expose server secrets to client JavaScript, or reuse known compromised credentials. Environment validation occurs on the server. Server error responses omit credentials and provider response bodies.
 
@@ -68,7 +68,7 @@ Webhooks use PayPal's verify-signature endpoint before event processing. A verif
 - **Pay:** reviewed Sandbox Checkout with explicit PayPal approval and independently verified capture.
 - **Divide & Pay:** the configured merchant can create equal or exact custom shares. Private bearer links let participants sign in and approve their own merchant payment. No escrow, arbitrary P2P transfers or automatic reminders. A share has at most one checkout; refunds do not automatically reopen a share.
 - **Budgets:** monthly category targets, editable by the user. Gross outgoing captures measure progress; refunds remain separate cash inflows. Suggested limits need at least two complete calendar months of history; zero-activity months are included.
-- **Copilot:** deterministic facts plus optional Gemini selection of relevant fact IDs and chart views. Every number is rendered from trusted server calculations, and evidence links expose supporting records. It cannot execute payments or save budgets.
+- **Copilot:** Gemini translates natural questions and recent follow-ups into validated read-only queries for rankings, category totals, monthly comparisons, refunds, and saved-budget progress. The server computes every displayed amount from authorized records. Gemini adds explanatory prose; exact figures and evidence links are rendered from those results. App guidance also works with an empty ledger. Provider failures show a specific configuration/quota status and calculated fallback. Recent turns stay in page state and clear on New chat or reporting-filter changes. It cannot execute payments or save budgets.
 - **Analytics:** AG Charts Community and traceable calculated statements. No FX conversion or fabricated comparisons.
 - **Connection / Settings:** identity/permission boundaries, configuration checks, profile and logout.
 
@@ -93,7 +93,7 @@ Browser QA uses the actual rendered UI at desktop and mobile widths. See [verifi
 ## Limitations and completion gates
 
 - Real buyer OAuth, buyer approval/capture, and a real signed webhook round trip remain untested until dashboard settings and Sandbox account authentication are completed.
-- Gemini is optional and untested without a provider key. No operational AI claim should be made until a real model request passes.
+- Gemini is optional. Live provider smoke checks passed for empty-ledger app help, a largest-payment query using test-only records, and a previous-month follow-up. No payment or database writes were performed by these checks.
 - Login does not grant complete PayPal history or a PayPal balance. Only this app's verified payment records are analyzed.
 - This is a Sandbox hackathon implementation, not a production financial system. It does not handle disputes, reversals, live money, account-wide reporting, or multi-merchant onboarding. The interactive analytics endpoint currently caps history at 10,000 entries and fails clearly above that limit.
 - No persistent conversational history, email reminders, automatic budget changes, automatic refunds, or Studio Agent Framework are claimed.

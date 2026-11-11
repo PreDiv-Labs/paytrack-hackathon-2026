@@ -42,3 +42,8 @@ A user-provided key was saved only in ignored `.env`, and the local production s
 ## Render deployment preparation
 
 The user authorized Render deployment with PayPal OAuth configuration deferred. The code is pushed to private GitHub repository `Preet-0/paytrack-hackathon-2026` on branch `main`. Source scanning checked 78 files and found no local environment secrets. The Render configuration uses the free plan, a database health endpoint at `/api/health`, and `RENDER_EXTERNAL_URL` for the stable application origin. The new origin regression, lint, TypeScript and production build passed. Render is signed in in Edge, but native screen capture/click control failed even after the window was restored. No Render service has been created or claimed live. Working Render integration or a privately supplied API key is the remaining deployment access gate.
+
+
+## Conversational copilot update
+
+The previous connectivity limitation is resolved with `gemini-3-flash-preview`. Live generation succeeded for empty-ledger app guidance, a largest outgoing payment query, and a previous-month follow-up using isolated test inputs. All 17 tests pass, including read-only query validation, currency/calendar isolation, refund direction, budget evidence, and zero-baseline comparisons. Gemini receives questions/recent conversation and calculated context, not automatic account emails, tokens, or raw payment descriptions. Local production compilation and lint pass. Windows Prisma regeneration encountered a loaded engine DLL lock; Next production compilation passed with the existing generated client, and Render performs a clean dependency installation/build.

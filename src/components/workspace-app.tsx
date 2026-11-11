@@ -45,7 +45,7 @@ import { Brand } from "./brand";
 import { Button } from "./ui/button";
 import type { Workspace } from "@/lib/workspace";
 import { analyze, type Entry } from "@/lib/analytics";
-import type { CopilotAnswer } from "@/lib/copilot";
+import CopilotPanel from "./copilot-panel";
 import { currencies, categories, money, toMinor, decimal, splitEqual } from "@/lib/money";
 import { logout } from "@/app/actions";
 import { notificationDestination } from "@/lib/notification-destination";
@@ -222,10 +222,6 @@ export function WorkspaceApp({
     [pending, startTransition] = useTransition();
   const [budgetCategory, setBudgetCategory] = useState(categories[0]),
     [budgetAmount, setBudgetAmount] = useState("");
-  const [question, setQuestion] = useState(""),
-    [answer, setAnswer] = useState<CopilotAnswer | null>(null),
-    [asked, setAsked] = useState(""),
-    [aiBusy, setAiBusy] = useState(false);
   const [groupMode, setGroupMode] = useState("equal"),
     [participantText, setParticipantText] = useState(""),
     [groupTotal, setGroupTotal] = useState("");
@@ -300,20 +296,6 @@ export function WorkspaceApp({
         setError(e instanceof Error ? e.message : "Couldn't save budget.");
       }
     });
-  }
-  async function ask(text: string) {
-    if (gate()) return;
-    setQuestion("");
-    setAsked(text);
-    setAiBusy(true);
-    setError("");
-    try {
-      setAnswer(await request("/api/copilot", { question: text, currency, month }));
-    } catch (e) {
-      setError(e instanceof Error ? e.message : "Couldn't load your analysis.");
-    } finally {
-      setAiBusy(false);
-    }
   }
   function exportCsv() {
     if (gate()) return;
@@ -596,7 +578,6 @@ export function WorkspaceApp({
                     value={month}
                     onChange={(e) => {
                       if (e.target.value) setMonth(e.target.value);
-                      setAnswer(null);
                     }}
                   />
                 </label>
@@ -605,7 +586,6 @@ export function WorkspaceApp({
                   value={currency}
                   onChange={(v) => {
                     setCurrency(v);
-                    setAnswer(null);
                   }}
                 >
                   {currencies.map((c) => (
@@ -1084,179 +1064,13 @@ export function WorkspaceApp({
             </>
           )}
           {section === "copilot" && (
-            <div className="copilot-layout">
-              <section className="panel copilot-main">
-                <div className="copilot-top">
-                  <span>
-                    <span className="icon-box purple">
-                      <Sparkles size={20} />
-                    </span>
-                    <strong>
-                      PayTrack Copilot<small>Your evidence navigator</small>
-                    </strong>
-                  </span>
-                  <span className={`badge ${data.readiness.ai ? "green" : "neutral"}`}>
-                    {data.readiness.ai ? "AI configured" : "Calculated summaries"}
-                  </span>
-                </div>
-                <div className="copilot-conversation">
-                  {!answer && !aiBusy ? (
-                    <>
-                      <div className="copilot-welcome">
-                        <span className="copilot-star">
-                          <Sparkles size={33} strokeWidth={1.3} />
-                        </span>
-                        <h2>
-                          A little curiosity.
-                          <br />A lot more clarity.
-                        </h2>
-                        <p>
-                          Ask about your recorded spending. Get answers with a trail back to the
-                          payments behind them.
-                        </p>
-                      </div>
-                      <div className="prompt-grid">
-                        {[
-                          "Where did I spend the most this month?",
-                          "What changed compared with last month?",
-                          "What is a realistic budget for me?",
-                          "Show the payments behind my insights.",
-                        ].map((q, i) => {
-                          const Icon = [ChartNoAxesCombined, ArrowLeftRight, Target, ReceiptText][
-                            i
-                          ];
-                          return (
-                            <button key={q} onClick={() => ask(q)}>
-                              <Icon size={17} />
-                              <span>{q}</span>
-                              <ArrowUpRight size={14} />
-                            </button>
-                          );
-                        })}
-                      </div>
-                    </>
-                  ) : (
-                    <>
-                      <div className="chat-question">{asked}</div>
-                      {aiBusy ? (
-                        <div className="thinking">
-                          <LoaderCircle size={18} className="spin" /> Following the evidence…
-                        </div>
-                      ) : (
-                        answer && (
-                          <div className="copilot-answer">
-                            <span className="answer-brand">
-                              <Sparkles size={17} /> PAYTRACK{" "}
-                              <small>
-                                {answer.source === "gemini"
-                                  ? "AI-assisted selection"
-                                  : "Calculated summary"}
-                              </small>
-                            </span>
-                            <h3>{answer.message}</h3>
-                            {answer.facts.map((f) => (
-                              <article className="fact" key={f.id}>
-                                <p>{f.text}</p>
-                                <button
-                                  className="evidence-link"
-                                  onClick={() => evidence(f.evidence)}
-                                >
-                                  <ShieldCheck size={13} /> {f.evidence.length} source records{" "}
-                                  <ArrowRight size={12} />
-                                </button>
-                              </article>
-                            ))}
-                            {a.count > 0 &&
-                              (answer.view === "cashflow" || answer.view === "categories") && (
-                                <Charts analytics={a} kind={answer.view} />
-                              )}
-                            <div className="answer-actions">
-                              <Link
-                                className="button small"
-                                href={href(answer.view === "budgets" ? "budgets" : "transactions")}
-                              >
-                                {answer.view === "budgets"
-                                  ? "Review budget suggestions"
-                                  : "Explore the supporting payments"}
-                                <ArrowRight size={14} />
-                              </Link>
-                            </div>
-                            <small className="fine">{answer.coverage}</small>
-                          </div>
-                        )
-                      )}
-                    </>
-                  )}
-                </div>
-                <form
-                  className="copilot-input"
-                  onSubmit={(e) => {
-                    e.preventDefault();
-                    if (question.trim()) ask(question);
-                  }}
-                >
-                  <input
-                    aria-label="Ask PayTrack"
-                    value={question}
-                    maxLength={500}
-                    onChange={(e) => setQuestion(e.target.value)}
-                    placeholder="What would you like to understand?"
-                  />
-                  <button
-                    className="button primary icon-only"
-                    type="submit"
-                    disabled={aiBusy || !question.trim()}
-                    aria-label="Send question"
-                  >
-                    <ArrowUpRight size={20} />
-                  </button>
-                </form>
-                <p className="copilot-disclaimer">
-                  <LockKeyhole size={12} /> Insights inform. You decide. No automatic payments or
-                  budget changes.
-                </p>
-              </section>
-              <aside className="copilot-context">
-                <section className="panel">
-                  <PanelHead title="Your context" />
-                  <dl className="context-list">
-                    <div>
-                      <dt>Reporting period</dt>
-                      <dd>{month}</dd>
-                    </div>
-                    <div>
-                      <dt>Currency</dt>
-                      <dd>{currency}</dd>
-                    </div>
-                    <div>
-                      <dt>Verified captures</dt>
-                      <dd>{a.count}</dd>
-                    </div>
-                    <div>
-                      <dt>Data source</dt>
-                      <dd>PayTrack ledger</dd>
-                    </div>
-                  </dl>
-                  <div className="context-note">
-                    <ShieldCheck size={18} />
-                    <p>
-                      Every figure is calculated from authorized records. AI selects relevant
-                      evidence and views; it can’t invent financial statements.
-                    </p>
-                  </div>
-                </section>
-                <div className="copilot-side-note">
-                  <h3>A source for every statement.</h3>
-                  <p>
-                    Tap “source records” to see the actual payment. If there isn’t enough history,
-                    we’ll say so.
-                  </p>
-                  <Link className="text-link" href={href("connection")}>
-                    Understand your data <ArrowRight size={14} />
-                  </Link>
-                </div>
-              </aside>
-            </div>
+            <CopilotPanel
+              key={currency + month}
+              currency={currency}
+              month={month}
+              preview={preview}
+              onEvidence={evidence}
+            />
           )}
           {section === "analytics" && (
             <>
@@ -1520,8 +1334,9 @@ export function WorkspaceApp({
                   <div>
                     <h3>Minimal AI context</h3>
                     <p>
-                      The copilot receives calculated summaries and category labels. No OAuth
-                      tokens, email addresses, or raw payment descriptions are sent.
+                      The copilot receives your questions, recent conversation, calculated summaries
+                      and category labels. No OAuth tokens, email addresses, or raw payment
+                      descriptions are sent.
                     </p>
                   </div>
                 </div>

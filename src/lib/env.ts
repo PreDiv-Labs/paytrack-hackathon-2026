@@ -10,7 +10,7 @@ const schema = z.object({
   PAYPAL_WEBHOOK_ID: z.string().optional(),
   PAYPAL_MERCHANT_ID: z.string().optional(),
   GEMINI_API_KEY: z.string().optional(),
-  GEMINI_MODEL: z.string().default("gemini-3.8-flash"),
+  GEMINI_MODEL: z.string().default("gemini-3-flash-preview"),
 });
 export function environment() {
   const result = schema.safeParse({

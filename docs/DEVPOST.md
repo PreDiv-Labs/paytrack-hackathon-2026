@@ -16,7 +16,7 @@ PayTrack organizes verified PayPal Sandbox activity into a currency-aware financ
 
 Next.js App Router, React, TypeScript, Tailwind, Radix UI, Auth.js, Prisma and Neon form the application. PayPal OAuth supplies identity; Checkout Orders v2 and verified webhooks supply financial evidence. Integer arithmetic, scoped queries and unique ledger references protect calculation and reconciliation boundaries. AG Grid Community powers the explorer; AG Charts Community supplies financial views.
 
-Gemini structured output selects among deterministic fact IDs, budget-category suggestions and allowed visualizations. The server rejects unknown references. The model cannot query arbitrary SQL, alter amounts, execute payments or save a budget. Numerical statements are rendered from server-calculated facts, and the underlying payment evidence remains accessible.
+Gemini plans validated read-only queries for summaries, payment rankings, refund lists, categories, calendar-month comparisons, and budget progress. It then explains the server-calculated results conversationally, using recent turns for follow-ups. Exact figures and evidence links come from authorized ledger calculations. The model cannot run SQL, alter amounts, execute payments, or save budgets. Live provider checks passed for empty-ledger app help and a financial follow-up using test-only inputs.
 
 ## Challenges
 
