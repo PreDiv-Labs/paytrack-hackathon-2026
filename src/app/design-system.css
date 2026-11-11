@@ -112,16 +112,26 @@ h3 {
   padding-bottom: 20px;
 }
 .workspace-switch strong {
-  font-size: 13px;
+  font-size: 12px;
   line-height: 1.4;
+  white-space: nowrap;
 }
 .workspace-switch small,
 .workspace-avatar {
   font-size: 12px;
 }
 .workspace-switch {
-  gap: 8px;
-  padding: 12px 9px;
+  gap: 7px;
+  padding: 12px 8px;
+}
+.workspace-switch .workspace-avatar {
+  width: 24px;
+  height: 28px;
+  flex-shrink: 0;
+}
+.workspace-switch > svg {
+  width: 12px;
+  margin-left: 0;
 }
 .workspace-switch > div {
   min-width: 0;
